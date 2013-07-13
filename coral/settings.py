@@ -162,5 +162,16 @@ LOGGING = {
     }
 }
 
+SYMTYPER_HOME = os.path.join(PROJECT_ROOT,"hmmer")
+
 import djcelery
 djcelery.setup_loader()
+
+BROKER_URL = 'amqp://testuser:testpass@localhost:5672/testvhost'
+#BROKER_HOST = "localhost"
+#BROKER_PORT= 5672
+#BROKER_USER= "testuser"
+#BROKER_PASSWORD= "testpass"
+#BROKER_VHOST = "testvhost" 
+
+#CELERYBEAT_SCHEDULER ="djcelery.schedulers.DatabaseScheduler"

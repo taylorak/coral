@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <meta charset="utf-8" />	
+        <link href="{{STATIC_URL}}css/style.css" rel="stylesheet" type="text/css" title="style.css">
+        {% block head %}{% endblock %}
+    </head>
+
+    <body>
+        <div id="inner-page">
+            {% block header %}{% endblock %}
+
+            {% block body %}{% endblock %}
+
+            {% block footer %}{% endblock %}
+        </div>
+    </body>
+
+</html>

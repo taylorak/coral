@@ -3,8 +3,10 @@ Created on Jul 5, 2013
 
 @author: taylorak
 '''
-from celery import task
+from celery.task import task
+import os
 
-@task()
-def hmmer(x, y):
-    return x + y
+@task(ignore_results=True)
+def handleForm(fasta, sample, parentDir):
+    os.chdir(parentDir)
+    os.system("""cat %s > output.fasta""" %(fasta))
