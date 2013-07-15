@@ -162,7 +162,7 @@ LOGGING = {
     }
 }
 
-SYMTYPER_HOME = os.path.join(PROJECT_ROOT,"hmmer")
+SYMTYPER_HOME = os.path.join(PROJECT_ROOT,"hmmer/data")
 
 import djcelery
 djcelery.setup_loader()

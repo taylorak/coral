@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from celery.result import AsyncResult
-from models import InputForm,symTyperTask
+from models import InputForm,symTyperTask 
 from tasks import handleForm
 from django.conf import settings
 import os
@@ -45,16 +45,18 @@ def InputFormDisplay(request):
 def status(request, id):
     sym_task = symTyperTask.objects.get(UID = id)
     result = AsyncResult(sym_task.celeryUID)
-
+    dirs = False
     if result.ready():
         if result.successful():
             message = "success!"
+            dirs = os.walk(os.path.join(settings.SYMTYPER_HOME,str(id) + "/data/hmmer_parsedOutput/")).next()[1]
         else:
             message = "failure!"
     else:
         message = "pending..."
     return render_to_response('status.html',RequestContext(request, {'message':message}))
         
-
+def chart(request,id,site):
+    return render_to_response('chart.html',RequestContext(request, {'message':message}))
 
 

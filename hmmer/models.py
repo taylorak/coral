@@ -1,5 +1,7 @@
 from django.db import models
 from django import forms
+from django.contrib import admin
+
 
 # Create your models here.
 
@@ -24,3 +26,8 @@ class InputForm(forms.Form):
             raise forms.ValidationError("extension must be id")
         return data
 
+class AdminSymTyperTask(admin.ModelAdmin):
+    list_display = ['celeryUID', 'UID']  
+
+     
+admin.site.register(symTyperTask, AdminSymTyperTask)
