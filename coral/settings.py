@@ -167,7 +167,8 @@ SYMTYPER_HOME = os.path.join(PROJECT_ROOT,"hmmer/files")
 import djcelery
 djcelery.setup_loader()
 
-BROKER_URL = 'amqp://testuser:testpass@localhost:5672/testvhost'
+#BROKER_URL = 'amqp://testuser:testpass@localhost:5672/testvhost'
+BROKER_URL = 'amqp://worker:r@bb1t+w0rker+run@localhost:5672/portal'
 #BROKER_HOST = "localhost"
 #BROKER_PORT= 5672
 #BROKER_USER= "testuser"

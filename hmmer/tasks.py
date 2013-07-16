@@ -10,5 +10,5 @@ import os
 @task(ignore_results=True)
 def handleForm(fasta, sample, parentDir):
     os.chdir(parentDir)
-    os.system("""symTyper.py --threads 12 clade --i %s -s %s""" %(fasta,sample))
+    os.system("""python /home/taylor/symTyper/symTyper.py --threads 12 clade --i %s -s %s""" %(fasta,sample))
 
