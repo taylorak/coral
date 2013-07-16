@@ -16,23 +16,28 @@ def InputFormDisplay(request):
     if request.method == 'POST':
         form = InputForm(request.POST, request.FILES)
         if form.is_valid():
-
+            
+            # create UID
             sym_task = symTyperTask.objects.create()
             sym_task.UID =  str(sym_task.id) + '.' + str(time.time())
 
             parentDir = os.path.join(settings.SYMTYPER_HOME,sym_task.UID)
-            os.makedirs(parentDir)
+            #os.makedirs(parentDir)
 
-            with open(os.path.join(parentDir,"input.fasta"),'w') as dest:
+            dataDir = os.path.join(parentDir,'data')
+            os.makedirs(dataDir)
+
+            # change later
+            with open(os.path.join(dataDir,"input.fasta"),'w') as dest:
                 for chunk in request.FILES['fasta_File'].chunks():
                     dest.write(chunk)
  
-            with open(os.path.join(parentDir,"input.id"),'w') as dest:
+            with open(os.path.join(dataDir,"input.ids"),'w') as dest:
                 for chunk in request.FILES['sample_File'].chunks():
                     dest.write(chunk)
                      
 
-            task = handleForm.delay("input.fasta","input.id",parentDir)
+            task = handleForm.delay("data/input.fasta","data/input.ids",parentDir)
 
             sym_task.celeryUID = task.id
             sym_task.save()
@@ -49,7 +54,7 @@ def status(request, id):
     if result.ready():
         if result.successful():
             message = "success!"
-            dirs = os.walk(os.path.join(settings.SYMTYPER_HOME,str(id) + "/data/hmmer_parsedOutput/")).next()[1]
+            #dirs = os.walk(os.path.join(settings.SYMTYPER_HOME,str(id) + "/data/hmmer_parsedOutput/")).next()[1]
         else:
             message = "failure!"
     else:
@@ -57,6 +62,7 @@ def status(request, id):
     return render_to_response('status.html',RequestContext(request, {'message':message}))
         
 def chart(request,id,site):
+    
     return render_to_response('chart.html',RequestContext(request, {'message':message}))
 
 

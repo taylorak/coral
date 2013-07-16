@@ -7,6 +7,13 @@
 {% block body %}
 <div id="Content">
     <p>{{ message }}</p>
+    {% if dirs %}
+    <ul>
+        {% for dir in dirs %}
+        <li> {{ dir }} </li>        
+        {% endfor %}
+    </ul>
+    {% endif %}
 
 </div>
 {% endblock %}

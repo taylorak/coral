@@ -23,7 +23,7 @@ class InputForm(forms.Form):
     def clean_sample_File(self):
         data = self.cleaned_data['sample_File']
         if not data.name.endswith('.ids'):
-            raise forms.ValidationError("extension must be id")
+            raise forms.ValidationError("extension must be ids")
         return data
 
 class AdminSymTyperTask(admin.ModelAdmin):

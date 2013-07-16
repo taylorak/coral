@@ -162,7 +162,7 @@ LOGGING = {
     }
 }
 
-SYMTYPER_HOME = os.path.join(PROJECT_ROOT,"hmmer/data")
+SYMTYPER_HOME = os.path.join(PROJECT_ROOT,"hmmer/files")
 
 import djcelery
 djcelery.setup_loader()
@@ -174,4 +174,5 @@ BROKER_URL = 'amqp://testuser:testpass@localhost:5672/testvhost'
 #BROKER_PASSWORD= "testpass"
 #BROKER_VHOST = "testvhost" 
 
+# not needed unless want to set up periodic tasks
 #CELERYBEAT_SCHEDULER ="djcelery.schedulers.DatabaseScheduler"
