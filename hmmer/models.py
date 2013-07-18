@@ -7,8 +7,8 @@ from django.contrib import admin
 
 class symTyperTask(models.Model):
     celeryUID = models.TextField(null=True,blank=True)
-#    folder = models.CharField(primary_key=True,max_length=255)
     UID = models.TextField(null=True,blank=True)
+#    folder = models.CharField(primary_key=True,max_length=255)
 
 class InputForm(forms.Form):
     fasta_File = forms.FileField()

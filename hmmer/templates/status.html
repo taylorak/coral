@@ -7,10 +7,11 @@
 {% block body %}
 <div id="Content">
     <p>{{ message }}</p>
+
     {% if dirs %}
     <ul>
         {% for dir in dirs %}
-        <li> {{ dir }} </li>        
+        <li> <a href="{% url "hmmer.views.chart" id dir %}"> {{ dir }} </a> </li>
         {% endfor %}
     </ul>
     {% endif %}
