@@ -7,11 +7,16 @@
 google.load('visualization', '1.0', {'packages':['corechart']});
 
 // Set a callback to run when the Google Visualization API is loaded.
-google.setOnLoadCallback(drawChartALL);
+google.setOnLoadCallback(drawAll);
 
 // Callback that creates and populates a data table,
 // instantiates the pie chart, passes in the data and
 // draws it.
+function drawAll() {
+    drawChartALL();
+    drawChartDETAILED();
+}
+
 function drawChartALL() {
 
     // Create the data table.
@@ -19,7 +24,7 @@ function drawChartALL() {
     data.addColumn('string', 'clade'); 
     data.addColumn('number', 'amount'); 
     data.addRows([
-    {% for key, value in dictionary.items %} 
+    {% for key, value in ALL_dict.items %} 
         ['{{ key }}',{{ value }}],
     {% endfor %}
             ]);
@@ -41,7 +46,7 @@ function drawChartDETAILED() {
     data.addColumn('string', 'clade'); 
     data.addColumn('number', 'amount'); 
     data.addRows([
-    {% for key, value in dictionary.items %} 
+    {% for key, value in DETAILED_dict.items %} 
         ['{{ key }}',{{ value }}],
     {% endfor %}
             ]);
@@ -66,6 +71,7 @@ function drawChartDETAILED() {
 </ul>
 
 <div id="chart_div_ALL"></div>
+<div id="chart_div_DETAILED"></div>
 {% endblock %}
                                                                                                                                                                                                                                                                     </body>
 

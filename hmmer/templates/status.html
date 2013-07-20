@@ -8,10 +8,13 @@
 <div id="Content">
     <p>{{ message }}</p>
 
+    {% for download in downloads %}
+    [<a href="{% url "hmmer.views.download" id download %}">{{ download }}</a>]
+    {% endfor %}
     {% if dirs %}
     <ul>
         {% for dir in dirs %}
-        <li> <a href="{% url "hmmer.views.chart" id dir %}"> {{ dir }} </a> </li>
+        <li> <a href="{% url "hmmer.views.chart" id dir %}"> {{ dir }} </a></li>
         {% endfor %}
     </ul>
     {% endif %}
