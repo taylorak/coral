@@ -1,0 +1,150 @@
+html{
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family: 'lucida grande',verdana,helvetica,arial,sans-serif;
+    margin: 10px;
+    color: #535353;
+    height: 100%;
+}
+
+#container {
+    padding: 5px 30px;
+    text-align: left;
+    height: 100%;
+    width: 950px;
+    margin: 0 auto;
+}
+
+.form-wrapper {
+    width:350px;
+    height:120px;
+    background-color: #EEEEEE;
+
+    position: absolute;
+    margin: auto;
+    top:0;
+    left:0;
+    bottom:0;;
+    right:0;
+
+    padding:10px;
+    border-radius:10px;
+    border: 1px solid #999;
+    font-weight: bold;
+    font-size:14px;
+    font-style:italic;
+    color:#09C;
+}
+
+.form-wrapper label {
+    display: inline-block;
+    float:left;
+    width:100px;
+    margin-right:5px;
+    margin-bottom:15px;
+}
+
+.form-wrapper input[type="file"] {
+    float:left;
+    margin-bottom:10px;
+    color:#09C;
+}
+
+.form-wrapper input[type="submit"] {
+    height:30px;
+    cursor:pointer;
+    border-radius:5px;
+    border: solid 1px #09C;
+    background:#09C;
+    color:#fff;
+}
+
+
+.form-wrapper input[type="submit"]:hover {
+    background:#fff;
+    color:#09C;
+}
+
+
+
+
+#loading {
+    width:350px;
+    height:120px;
+    background-color: #EEEEEE;
+
+    position: absolute;
+    margin: auto;
+    top:0;
+    left:0;
+    bottom:0;;
+    right:0;
+
+    padding:10px;
+    border-radius:10px;
+    border: 1px solid #999;
+    font-weight: bold;
+    font-size:30px;
+    font-style:italic;
+    color:#09C;
+
+    text-align:center;
+    vertical-align:middle;
+    line-height:120px;
+}
+
+
+
+
+.ui-tabs-nav {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ui-tabs-nav li {
+    padding: 0;
+    margin: 0 5px 0 0;
+    float: left;
+}
+
+.ui-tabs-nav a {
+    text-decoration: none;
+    display: block;
+    padding: 5px 15px 3px 15px;
+    border: 1px solid #999;
+    border-bottom: none;
+}
+
+.ui-tabs-active a {
+    background:#fff;
+    color:#09C;
+
+
+}
+
+.ui-tabs-panel {
+    clear: left;
+    border: 1px solid #999;
+    padding: 10px;
+    background-color: #EEEEEE;
+}
+
+table {
+    width: 100%;    
+    border-width: 1px 0 1px 1px;
+    overflow: auto;
+}
+
+th {
+    
+}
+
+table tr td {
+    border-right: 1px solid #CCCCCC;
+    padding: 4px;
+}

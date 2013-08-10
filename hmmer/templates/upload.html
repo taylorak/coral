@@ -2,32 +2,24 @@
 
 {% block head %}
 <title>File Form</title>
+<link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />
 {% endblock %}
 
 {% block body %}
-<div id="Content">
+<form enctype="multipart/form-data" method="post" action=".">
 
-    <form enctype="multipart/form-data" method="post" action=".">
+    <fieldset class="form-wrapper">
+        <legend>SymTyper Form:</legend>
 
-        <table>
-            {% for field in form %}
-            <tr>
-                <th>{{ field.label_tag }}:</th><td>{{ field }}</td></td>
-            {% if field.errors %}
-                <td class="errors">{{ field.errors }}</td>
-            {% endif %}
-            </tr>
-            {% endfor %}
-            <tr>
-            	<br/>
-			    <td></td>
-			    <td><input type="submit" name="submit" value="submit" /></td>            
-            </tr>
-        </table>
+        <label class="label" for="id_fasta_File">Fasta File:</label>
+        {{ form.fasta_File }}
 
+        <label class="label" for="id_sample_File">Id File:</label>
+        {{ form.sample_File }}
+
+        <input type="submit" value="Submit"/>
         {% csrf_token %}
 
-    </form>
-
-</div>
+    </fieldset>
+</form>
 {% endblock %}

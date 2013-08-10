@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Preview</title>
+{% endblock %}
+
+{% block body %}
+<div id="container">
+
+    <table class="table table-striped">
+        <tbody>
+            {% for row in table %}
+            {% if forloop.first  %}
+            <thead>
+                {% for item in row %}
+                <th>{{ item }}</th>
+                {% endfor %}
+            </thead>
+            {% else %}
+            <tr> 
+                {% for item in row %}
+                <td>{{ item }}</td>
+                {% endfor %}
+            </tr>
+
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block head %}
+<title>SymTyper</title>
+
+
+<link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />
+
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+ 
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#tabs").tabs({
+            cache: true,
+            spinner: 'Loading'
+        });
+    });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    var text = $("#loading").text(),
+    i = 0;
+
+    setInterval(function() {
+        $("#loading").append(".");
+        i++;
+
+        if(i==4) {
+            $("#loading").html(text);
+            i=0;
+        }
+    }, 500);
+});
+</script>
+
+{% endblock %}
+
+{% block body %}
+{% if dirs %}
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tab-1">Summary</a></li>
+        <li><a href="#tab-2">Data</a></li>
+        <li><a href="{% url "clades" id %}">Clades</a></li>
+    </ul>
+
+    <div id="tab-1">
+        <p>summary</p>
+    </div>
+
+    <div id="tab-2">
+        <p>data</p>
+    </div>
+</div>
+
+{% else %}
+<div id="loading">Processing</div>
+
+{% endif %}
+{% endblock %}

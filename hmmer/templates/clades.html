@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+
+{% block head %}
+<title>Clades</title>
+
+
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+<link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />
+
+// Load the Visualization API and the piechart package.
+google.load('visualization', '1.0', {'packages':['corechart']});
+
+// Set a callback to run when the Google Visualization API is loaded.
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+
+    // Create the data table.
+    {% for dir in dirs %}
+    var data_{{dir}} = new google.visualization.DataTable();
+    data_{{dir}}.addColumn('string', 'clade'); 
+    data_{{dir}}.addColumn('number', 'amount'); 
+    data_{{dir}}.addRows([
+        {% for key in detailed_headers %} 
+        ['{{ key }}',{{ detailed_counts | dictvalue:dir | dictvalue:key }}],
+        {% endfor %}
+            ]);
+    {% endfor %}
+
+    // Set chart options
+    {% for dir in dirs %}
+    var options_{{dir}} = {
+        'width':300,
+        'height':100
+    };
+    {% endfor %}
+
+    // Instantiate and draw our chart, passing in some options.
+    {% for dir in dirs %}
+    var chart_{{dir}} = new google.visualization.PieChart(document.getElementById('chart_div_{{dir}}'));
+    chart_{{dir}}.draw(data_{{dir}}, options_{{dir}});
+    {% endfor %}
+}
+</script>
+
+{% endblock %}
+
+{% block body %}
+<table>
+    <tbody>
+        <th>SITE</th>
+        {% for header in all_headers %}
+        <th>{{header}}</th> 
+        {% endfor %}
+        <th>PIECHART</th>
+
+
+        {% for dir in dirs %}
+        <tr>
+            <td>{{ dir }}</td>
+
+            {% for key in all_headers %}
+            <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
+            {% endfor %}
+
+            <td><div id="chart_div_{{dir}}"></div><td>
+        <tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

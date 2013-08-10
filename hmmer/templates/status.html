@@ -1,23 +1,58 @@
 {% extends "base.html" %}
-
 {% block head %}
 <title>Status</title>
 {% endblock %}
 
 {% block body %}
-<div id="Content">
-    <p>{{ message }}</p>
+<div class="container-fluid">
+    <div class="masthead">
+        {% if dirs %}
+        <ul class="nav nav-pills pull-right">
+            <li class="active"><a href="{% url "hmmer.views.status" id %}">Home</a></li>
+        </ul>
+        {% endif %}
 
-    {% for download in downloads %}
-    [<a href="{% url "hmmer.views.download" id download %}">{{ download }}</a>]
-    {% endfor %}
+        <h3 class="muted">SymTyper</h3>
+    </div>
+
     {% if dirs %}
-    <ul>
-        {% for dir in dirs %}
-        <li> <a href="{% url "hmmer.views.chart" id dir %}"> {{ dir }} </a></li>
-        {% endfor %}
-    </ul>
+    <div class="row-fluid">
+        <div class="span3">
+            <div class="well sidebar-nav">
+                <ul class="nav nav-list">
+                    <li><a id="tab1">Data</a></li>
+
+                    <li class="nav-header">Location</li>
+                    {% for dir in dirs %}
+                    <li> <a id="{{ dir }}" href="{% url "hmmer.views.chart" id dir %}">{{ dir }}</a></li>
+                    {% endfor %}
+                    <li class="nav-header">Output</li>
+                    {% for download in downloads %}
+                    <li><a href="{% url "hmmer.views.preview" id download %}">{{ download }}</a></li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="span9">
+            <div class="hero-unit pagination-centered">
+                <h1>Success!</h1>
+                <div id="result"
+                    <p>Some text describing the layout of the site and where to
+                    find results...</p>
+                </div>
+            </div>
+
+            <div id="return"></div>
+
+        </div>
+    </div>
+    {% else %}
+    <p>{{ message }}</p>
     {% endif %}
 
+
+    <!--    <FOOTER>&copy Copyright 2013</footer> -->
 </div>
 {% endblock %}
