@@ -14,6 +14,8 @@ import csv
 import urllib
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt
+
 
 ### MOVE LATER
 def writeFile(origin,destination):
@@ -122,8 +124,9 @@ def inputFormDisplay(request):
         form = InputForm()
     return render_to_response('upload.html',RequestContext(request, {'form':form}))
 
+@csrf_exempt
 def clades(request,id):
-    dirs = all_headers = detailed_headers = None
+    dirs = all_counts = detailed_counts = all_headers = detailed_headers = None
     try: 
         sym_task = symTyperTask.objects.get(UID = id)
     except ObjectDoesNotExist:
@@ -140,17 +143,19 @@ def clades(request,id):
             all_headers = all[0][1:]
     
             for row in all[1:]:
-                total = 0
+                total = hit = no_hit = low = ambiguous = percentages = 0
                 site = row[0]
                 for column in row[1:]:
                     total += int(column)
 
-                hit = round(float(row[1])/total * 100,2)
-                no_hit = round(float(row[2])/total * 100,2)
-                low = round(float(row[3])/total * 100,2)
-                ambiguous = round(float(row[4])/total * 100,2)
+                if total != 0:
+                    hit = round(float(row[1])/total * 100,2)
+                    no_hit = round(float(row[2])/total * 100,2)
+                    low = round(float(row[3])/total * 100,2)
+                    ambiguous = round(float(row[4])/total * 100,2)
                 percentages = [hit,no_hit,low,ambiguous]
                 all_counts[site] = dict(zip(all_headers,percentages))
+
 
         with open(os.path.join(output,"DETAILED_counts.tsv")) as tsv:
             detailed_counts = {}
@@ -174,7 +179,35 @@ def clades(request,id):
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
     return render_to_response('clades.html',RequestContext(request, {'dirs':dirs,'all_counts':all_counts,'detailed_counts':detailed_counts,'all_headers':all_headers,'detailed_headers':detailed_headers}))
 
-def status(request, id):
+@csrf_exempt
+def blast(request,id):
+    unique_counts = None
+    try: 
+        sym_task = symTyperTask.objects.get(UID = id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse("form"))
+
+    output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "blastResults")
+    ready,redirect = taskReady(sym_task.celeryUID)
+    if ready == True:
+        try:
+            with open(os.path.join(output,"UNIQUE_subtypes_count.tsv")) as tsv:
+                unique_counts = []
+                all = [line.strip().split() for line in tsv]
+                unique_headers = all[0]
+                
+                if len(unique_headers) > 1:
+                    for row in all[1:]:
+                        unique_counts.append(dict(zip(unique_headers, row)))
+        except:
+            pass
+    elif redirect:
+        return redirect
+    else:
+        return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
+    return render_to_response('blast.html',RequestContext(request, {'unique_counts':unique_counts}))
+
+def status(request,id):
 #    dirs = ALLtable = DETAILEDtable = headers = message = None
     dirs = None
     downloads = ['ALL_counts.tsv','DETAILED_counts.tsv']
@@ -195,7 +228,8 @@ def status(request, id):
     else:
         message = "pending..."
 
-    return render_to_response('tabs.html',RequestContext(request,{'dirs': dirs,'id':id}))
+    return render_to_response('main.html',RequestContext(request,{'dirs': dirs,'id':id}))
+#    return render_to_response('tabs.html',RequestContext(request,{'dirs': dirs,'id':id}))
 #    return render_to_response('status.html',RequestContext(request, {'message':message,'dirs':dirs,'downloads':downloads,'id':id,'ALLtable':ALLtable,'DETAILEDtable':DETAILEDtable}))
 
 """

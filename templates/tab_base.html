@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <meta charset="utf-8" />	
+       {% block head %}{% endblock %}
+    </head>
+
+    <body>
+        <div id="tab_container">
+            {% block header %}{% endblock %}
+            {% block body %}{% endblock %}
+            {% block footer %}{% endblock %}
+        </div>
+
+    </body>
+
+</html>

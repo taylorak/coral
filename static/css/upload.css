@@ -1,7 +1,9 @@
+* {
+    padding: 0px;
+    marin: 0px;
+}
 html{
     height: 100%;
-    margin: 0px;
-    padding: 0px;
 }
 
 body {
@@ -15,7 +17,7 @@ body {
     padding: 5px 30px;
     text-align: left;
     height: 100%;
-    width: 950px;
+    width: 80%;
     margin: 0 auto;
 }
 
@@ -81,7 +83,7 @@ body {
     margin: auto;
     top:0;
     left:0;
-    bottom:0;;
+    bottom:0;
     right:0;
 
     padding:10px;
@@ -131,20 +133,62 @@ body {
     clear: left;
     border: 1px solid #999;
     padding: 10px;
-    background-color: #EEEEEE;
 }
 
 table {
-    width: 100%;    
+    width: 100%;
     border-width: 1px 0 1px 1px;
     overflow: auto;
 }
 
 th {
-    
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
 }
 
 table tr td {
     border-right: 1px solid #CCCCCC;
     padding: 4px;
+    text-align: right;
+}
+
+.gray {
+    background-color: #EEEEEE;
+}
+
+#menu {
+    list-style: none outside none;
+    margin: 5px 0 0;
+    overflow: hidden;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    font-size: 10px;
+    background-color:#CCCCCC;
+}
+
+#menu li {
+    border-right: 0.5px solid #999999;
+    float: left;
+    height: 20px;
+    margin 0;
+    overflow: hidden;
+    width: 99px;
+}
+
+#menu a {
+    text-decoration: none;
+    padding: 5px 5px 7px 0;
+    margin: 1px 0;
+    display: block;
+    width: 100%;
+    line-height: 10px;
+    color: #fff;
+}
+
+#menu a:hover {
+    background-color: #fff;
+    color: #CCCCCC;
 }

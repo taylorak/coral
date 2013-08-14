@@ -2,15 +2,15 @@
 
 {% block head %}
 <title>File Form</title>
-<link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />
+<!--<link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />--!>
 {% endblock %}
 
 {% block body %}
-<form enctype="multipart/form-data" method="post" action=".">
 
-    <fieldset class="form-wrapper">
-        <legend>SymTyper Form:</legend>
+<fieldset class="form-wrapper">
+    <legend>SymTyper:</legend>
 
+    <form enctype="multipart/form-data" method="post" action=".">
         <label class="label" for="id_fasta_File">Fasta File:</label>
         {{ form.fasta_File }}
 
@@ -20,6 +20,6 @@
         <input type="submit" value="Submit"/>
         {% csrf_token %}
 
-    </fieldset>
-</form>
+    </form>
+</fieldset>
 {% endblock %}

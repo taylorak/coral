@@ -1,0 +1,25 @@
+{% extends "tab_base.html" %}
+{% load custom_filters %}
+
+{% block body %}
+
+<div style="text-align:left;padding-top:10px; padding-bottom:5px;font-weight:bold; border-width:1px;border-bottom-style:solid;font-size:1.2em;background-color:#FFFFFF;">Unique Subtypes</div>
+<table cellspacing="0" cellpadding="10px">
+    <tbody>
+        {% for row in unique_counts %}
+        <tr class="{% cycle '' 'altrow' as alt %}">
+            {% if forloop.first %}
+            {% for key,value in row.items %}
+            <th>{{ key }}</th>
+            {% endfor %}
+            </tr><tr class="{% cycle alt  %}">
+            {% endif %}
+            {% for key,value in row.items %}
+                <td>{{ value }}</td> 
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,19 +1,39 @@
-{% extends "base.html" %}
+{% extends "tab_base.html" %}
 {% load custom_filters %}
 
-{% block head %}
-<title>Clades</title>
+{% block body %}
 
+<table cellspacing="0" cellpadding="10px">
+    <tbody>
+        <th>SITE</th>
+        {% for header in all_headers %}
+        <th>{{header}}</th> 
+        {% endfor %}
+        <th>PIECHART</th>
+
+
+        {% for dir in dirs %}
+        <tr class="{% cycle '' 'altrow' %}">
+            <td>{{ dir }}</td>
+
+            {% for key in all_headers %}
+            <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
+            {% endfor %}
+            <td></td>
+            <!--  <td><div id="chart_div_{{dir}}"></div></td> !-->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">
-<link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />
 
 // Load the Visualization API and the piechart package.
-google.load('visualization', '1.0', {'packages':['corechart']});
+google.load('visualization', '1.0', {'packages':['corechart'],"callback":drawChart});
 
 // Set a callback to run when the Google Visualization API is loaded.
-google.setOnLoadCallback(drawChart);
+//google.setOnLoadCallback(drawChart);
 
 function drawChart() {
 
@@ -32,8 +52,9 @@ function drawChart() {
     // Set chart options
     {% for dir in dirs %}
     var options_{{dir}} = {
-        'width':300,
-        'height':100
+        'width':500,
+        'height':300,
+        backgroundColor: 'transparent'
     };
     {% endfor %}
 
@@ -45,30 +66,6 @@ function drawChart() {
 }
 </script>
 
-{% endblock %}
 
-{% block body %}
-<table>
-    <tbody>
-        <th>SITE</th>
-        {% for header in all_headers %}
-        <th>{{header}}</th> 
-        {% endfor %}
-        <th>PIECHART</th>
-
-
-        {% for dir in dirs %}
-        <tr>
-            <td>{{ dir }}</td>
-
-            {% for key in all_headers %}
-            <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
-            {% endfor %}
-
-            <td><div id="chart_div_{{dir}}"></div><td>
-        <tr>
-        {% endfor %}
-    </tbody>
-</table>
 
 {% endblock %}
