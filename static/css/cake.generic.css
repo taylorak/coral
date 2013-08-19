@@ -98,7 +98,7 @@ ul, li {
 }
 #header h1 {
 	position:relative;
-	background:  url('../img/metarep-logo.png') no-repeat left;	
+	background:  url('../img/logo.png') no-repeat left;	
 	height:12px;
 	width:300px;	
 	font-size: 1.445em;
@@ -179,7 +179,7 @@ ul, li {
 	background: #fff;
 	clear: both;
 	color: #333;	
-	overflow: auto;
+/*	overflow: auto; */
 }
 #footer {
 	clear: both;
@@ -221,7 +221,7 @@ table {
 	clear: both;
 	color: #333;
 	margin-bottom: 10px;
-	width: 100%;
+	width: 100%; 
 	overflow: auto;
 }
 
@@ -232,6 +232,7 @@ th {
 	border-top: 1px solid #fff;
 	border-left: 1px solid #fff;
 	text-align: center;
+    padding: 0 5px; /* */
 }
 
 th.hist_count {
@@ -319,7 +320,7 @@ form {
 	clear: both;
 	margin-right: 20px;
 	padding: 5px;
-	width: 50%;
+	width: 100%;
 }
 
 

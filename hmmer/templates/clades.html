@@ -5,12 +5,11 @@
 
 <table cellspacing="0" cellpadding="10px">
     <tbody>
-        <th>SITE</th>
+        <th>sample</th>
         {% for header in all_headers %}
         <th>{{header}}</th> 
         {% endfor %}
-        <th>PIECHART</th>
-
+        <th><a href="{% url "dlDetailed" id %}">Detailed Count</a></th>
 
         {% for dir in dirs %}
         <tr class="{% cycle '' 'altrow' %}">
@@ -19,8 +18,7 @@
             {% for key in all_headers %}
             <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
             {% endfor %}
-            <td></td>
-            <!--  <td><div id="chart_div_{{dir}}"></div></td> !-->
+            <td><div id="chart_div_{{dir}}"></div></td>
         </tr>
         {% endfor %}
     </tbody>

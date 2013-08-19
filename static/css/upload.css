@@ -1,4 +1,4 @@
-* {
+/** {
     padding: 0px;
     marin: 0px;
 }
@@ -191,4 +191,18 @@ table tr td {
 #menu a:hover {
     background-color: #fff;
     color: #CCCCCC;
+}
+**/
+
+#form-wrapper {
+    width:300px;
+    height:200px;
+
+    margin: auto;
+}
+
+#loading {
+    width: 300px;
+    height: 200px;
+    margin: auto;
 }

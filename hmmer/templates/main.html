@@ -1,185 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
+{% extends "base.html" %}
 
-        <title>SymTyper</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+{% block head %}
+<title>SymTyper</title>
+<link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
 
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui-1.7.2.custom.css">
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/cake.generic.css">
-        <script type="text/javascript" src="{{ STATIC_URL }}js/prototype.js"></script>
+{% block body %}
 
-        <script type="text/javascript" src="{{ STATIC_URL }}js/scriptaculous.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/builder.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/effects.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/dragdrop.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/controls.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/slider.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/sound.js"></script>
-
-        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.js"></script>
-
-        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.js"></script>
-
-        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
-
-        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-
-        <script type="text/javascript">
-         jQuery.noConflict();
-            
-            jQuery(function(){			
-
-                // Dialog			
-                jQuery('#dialog').dialog({
-                    autoOpen: false,
-                    width: 850,
-                    modal: true,
-                    buttons: {
-                        "Ok": function() { 
-                            jQuery(this).dialog("close"); 
-                        },
-                    }
-                });
-                
-                // Dialog Link
-                jQuery('#dialog_link').click(function(){
-                    jQuery('#dialog').dialog('open');
-                    return false;
-                });
-
-                // Datepicker
-                jQuery('#datepicker').datepicker({
-                    inline: true
-                });
-                
-                // Slider
-                jQuery('#slider').slider({
-                    range: true,
-                    values: [17, 67]
-                });
-                
-                // Progressbar
-                jQuery("#progressbar").progressbar({
-                    value: 20 
-                });
-                
-                //hover states on the static widgets
-                jQuery('#dialog_link, ul#icons li').hover(
-                    function() { jQuery(this).addClass('ui-state-hover'); }, 
-                    function() { jQuery(this).removeClass('ui-state-hover'); }
-                );
-                
-            });
-            
-            jQuery.fn.qtip.styles.mystyle = { // Last part is the name of the style
-                       width: 250,
-                       background: '#A2D959',
-                       color: 'black',
-                       textAlign: 'center',
-                       border: {
-                          width: 1,
-                          radius: 4,
-                          color: '#6DB33F'
-                       },
-                       tip: { // Now an object instead of a string
-                             corner: 'topLeft', // We declare our corner within the object using the corner sub-option
-                             color: '#F99D31',
-                             size: {
-                                x: 20, // Be careful that the x and y values refer to coordinates on screen, not height or width.
-                                y : 8 // Depending on which corner your tooltip is at, x and y could mean either height or width!
-                             }
-                        },
-                       name: 'dark' // Inherit the rest of the attributes from the preset dark style
-            }	
-        </script>
-
-        <!--Handle Google Analytics Tracking. Configure the parameters in app/config/metarep.php-->
-         <script type="text/javascript">
-              var is_production = true;
-              var dev_test = /(-dev)|(-test)/;
-              var hostname = location.hostname;
-            
-              if(hostname.search(dev_test) != -1) {
-                is_production = false;
-              } // end if(hostname.search(dev_test) != -1)
-            
-              if(is_production) {
-                var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-                document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-              } // end if(is_production)
-        </script>
-        <script src="{{ STATIC_URL }}js/ga.js" type="text/javascript"></script>		
-        <script type="text/javascript">
-              if(is_production) {
-                try {
-                  var pageTracker = _gat._getTracker("UA-9809410-3");
-                  pageTracker._setDomainName(".jcvi.org");
-                  pageTracker._trackPageview();
-                } catch(err) {}
-              } // end if(is_production)  
-        </script>   
-            
-        <style type="text/css">
-            /*demo page css*/	
-            .demoHeaders { margin-top: 2em; }
-            #dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
-            #dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-            ul#icons {margin: 0; padding: 0;}
-            ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
-            ul#icons span.ui-icon {float: left; margin: 0 4px;}
-        </style>
-
-</head>
-
-<body>
     {% if dirs %}	
-    <div id="container">
-        <div id="header">
-            <h1></h1>			
-        </div>	
-        <div id="header-url-panel">
-            <ul>
-                <li>website <span style="color: #00A4E4;"><a href="http://www.jcvi.org/metarep">http://www.jcvi.org/metarep</a></span></li>
-                <li>source code <span style="color: #00A4E4;"><a href="http://github.com/jcvi/METAREP">http://github.com/jcvi/METAREP</a></span></li>
-           <!--     <li>blog <span style="color: #00A4E4;"><a href="http://blogs.jcvi.org/tag/metarep">http://blogs.jcvi.org/tag/metarep</a></span></li>
-           <li>contact <span style="color: #00A4E4;"><a href="mailto:metarep-support@jcvi.org">metarep-support@jcvi.org</a></span></li> --!>
-            </ul>	
-        </div>		
-
-        <ul id="menu">			
-            <li><a href="http://jcvi.org/metarep/menus/quick">Quick Navigation</a></li>
-            <li><a href="http://jcvi.org/metarep/search/all">Search</a></li>
-
-            <li><a href="http://jcvi.org/metarep/projects">Projects</a> </li>			
-
-
-            <li></li>
-            <li><a href="http://jcvi.org/metarep/users/logout">Log Out</a> </li>
-        </ul>	
-
-
         <div id="content">	
-            <!----------------------------------------------------------
-            File: index.ctp
-            Description: View Index Page.
-
-            Author: jgoll
-            Date:   Mar 18, 2010
-            <!---------------------------------------------------------->
 
             <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/view.css"><div class="view-panel">
 
                 <ul id="breadcrumb">
-                    <li><a href="http://jcvi.org/metarep/dashboard/index" title="Dashboard"><img src="{{ STATIC_URL }}img/home.png" alt="Dashboard" class="home"></a></li>
-                    <li><a href="http://jcvi.org/metarep/projects/index">Projects</a></li>
-                    <li><a href="http://jcvi.org/metarep/projects/view/21">View Project</a></li>
-                    <li><a href="http://jcvi.org/metarep/view/index/HOT0010-0070M">View Dataset</a></li>
+                    <li><a href="#" title="Dashboard"><img src="{{ STATIC_URL }}img/home.png" alt="Dashboard" class="home"></a></li>
+                    <li><a href="#">Bread</a></li>
+                    <li><a href="#">Crumbs</a></li>
                 </ul>
 
-                <h2>View<span class="selected_library">HOT0010-0070M (HOTS vertical ocean depth profile)</span>
+              <!--  <h2>View<span class="selected_library">HOT0010-0070M (HOTS vertical ocean depth profile)</span>
                     <span id="spinner" style="display: none;"><img src="{{ STATIC_URL }}img/ajax-loader.gif" alt="" width="25px"></span>
-                </h2>
+                </h2> --!>
 
                 <div id="view-tabs">
                     <ul>
@@ -194,16 +35,16 @@
                                 asynchronous:true, 
                                 evalScripts:true, 
                                 onComplete:function(request, json) {
-                                    Element.hide('spinner'); 
+                                //    Element.hide('spinner'); 
                                     Effect.Appear('view-facet-panel',{ 
                                         duration: 1.2 
                                     }); 
-                                    Element.hide('spinner');
+                                //    Element.hide('spinner');
                                 }, 
-                                onLoading:function(request) {
-                                    Element.show('spinner'); 
-                                    Element.show('spinner');
-                                }, 
+                                //onLoading:function(request) {
+                                //    Element.show('spinner'); 
+                                //    Element.show('spinner');
+                                //}, 
                                 requestHeaders:['X-Update', 'view-facet-panel']
                             }) 
                         }, false);
@@ -220,16 +61,16 @@
                                 asynchronous:true, 
                                 evalScripts:true, 
                                 onComplete:function(request, json) {
-                                    Element.hide('spinner'); 
+                                //    Element.hide('spinner'); 
                                     Effect.Appear('view-facet-panel',{ 
                                         duration: 1.2 
                                     }); 
-                                    Element.hide('spinner');
+                                //    Element.hide('spinner');
                                 }, 
-                                onLoading:function(request) {
-                                    Element.show('spinner'); 
-                                    Element.show('spinner');
-                                }, 
+                                //onLoading:function(request) {
+                                //    Element.show('spinner'); 
+                                //    Element.show('spinner');
+                                //}, 
                                 requestHeaders:['X-Update', 'view-facet-panel']
                             }) 
                         }, false);
@@ -241,58 +82,10 @@
 
                     <div id="view-data-tab">
                         <div style="text-align:left;padding-top:10px; padding-bottom:5px;font-weight:bold; border-width:1px;border-bottom-style:solid;font-size:1.2em;background-color:#FFFFFF;">Under Construction</div>
- <!--                       <table cellspacing="0" cellpadding="0">
-                            <tbody>
-                            </tbody>
-                        </table> --!>
                     </div>
                     <div id="view-facet-panel"></div>
                 </div>
 
-
-                <!----------------------------------------------------------
-                <div class="ui-tabs ui-widget ui-widget-content ui-corner-all" id="view-tabs">
-                    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-                        <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#view-data-tab">Data</a></li>
-                        <li class="ui-state-default ui-corner-top"><a href="#view-facet-panel" id="link1455964800" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Summary</span></a><script type="text/javascript">
-                            //<![CDATA[
-                        Event.observe('link1455964800', 'click', function(event) { Element.hide('view-facet-panel'); new Ajax.Updater('view-facet-panel','/metarep/view/summary/HOT0010-0070M/view.1376338507/summary', {asynchronous:true, evalScripts:true, onComplete:function(request, json) {Element.hide('spinner'); Effect.Appear('view-facet-panel',{ duration: 1.2 }); Element.hide('spinner');}, onLoading:function(request) {Element.show('spinner'); Element.show('spinner');}, requestHeaders:['X-Update', 'view-facet-panel']}) }, false);
-                        //]]>
-                        </script></li><li class="ui-state-default ui-corner-top"><a href="#view-facet-panel" id="link1181490762" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Species (Blast)</span></a><script type="text/javascript">
-                        //<![CDATA[
-                        Event.observe('link1181490762', 'click', function(event) { Element.hide('view-facet-panel'); new Ajax.Updater('view-facet-panel','/metarep/view/facet/HOT0010-0070M/view.1376338507/blast_species', {asynchronous:true, evalScripts:true, onComplete:function(request, json) {Element.hide('spinner'); Effect.Appear('view-facet-panel',{ duration: 1.2 }); Element.hide('spinner');}, onLoading:function(request) {Element.show('spinner'); Element.show('spinner');}, requestHeaders:['X-Update', 'view-facet-panel']}) }, false);
-                        //]]>
-                        </script></li><li class="ui-state-default ui-corner-top"><a href="#view-facet-panel" id="link1527314466" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Common Name</span></a><script type="text/javascript">
-                        //<![CDATA[
-                        Event.observe('link1527314466', 'click', function(event) { Element.hide('view-facet-panel'); new Ajax.Updater('view-facet-panel','/metarep/view/facet/HOT0010-0070M/view.1376338507/com_name', {asynchronous:true, evalScripts:true, onComplete:function(request, json) {Element.hide('spinner'); Effect.Appear('view-facet-panel',{ duration: 1.2 }); Element.hide('spinner');}, onLoading:function(request) {Element.show('spinner'); Element.show('spinner');}, requestHeaders:['X-Update', 'view-facet-panel']}) }, false);
-                        //]]>
-                        </script></li><li class="ui-state-default ui-corner-top"><a href="#view-facet-panel" id="link1170757828" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Gene Ontology</span></a><script type="text/javascript">
-                        //<![CDATA[
-                        Event.observe('link1170757828', 'click', function(event) { Element.hide('view-facet-panel'); new Ajax.Updater('view-facet-panel','/metarep/view/facet/HOT0010-0070M/view.1376338507/go_id', {asynchronous:true, evalScripts:true, onComplete:function(request, json) {Element.hide('spinner'); Effect.Appear('view-facet-panel',{ duration: 1.2 }); Element.hide('spinner');}, onLoading:function(request) {Element.show('spinner'); Element.show('spinner');}, requestHeaders:['X-Update', 'view-facet-panel']}) }, false);
-                        //]]>
-                        </script></li><li class="ui-state-default ui-corner-top"><a href="#view-facet-panel" id="link837040324" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Enzyme</span></a><script type="text/javascript">
-                        //<![CDATA[
-                        Event.observe('link837040324', 'click', function(event) { Element.hide('view-facet-panel'); new Ajax.Updater('view-facet-panel','/metarep/view/facet/HOT0010-0070M/view.1376338507/ec_id', {asynchronous:true, evalScripts:true, onComplete:function(request, json) {Element.hide('spinner'); Effect.Appear('view-facet-panel',{ duration: 1.2 }); Element.hide('spinner');}, onLoading:function(request) {Element.show('spinner'); Element.show('spinner');}, requestHeaders:['X-Update', 'view-facet-panel']}) }, false);
-                        //]]>
-                        </script></li><li class="ui-state-default ui-corner-top"><a href="#view-facet-panel" id="link1224410195" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>HMM</span></a><script type="text/javascript">
-                        //<![CDATA[
-                        Event.observe('link1224410195', 'click', function(event) { Element.hide('view-facet-panel'); new Ajax.Updater('view-facet-panel','/metarep/view/facet/HOT0010-0070M/view.1376338507/hmm_id', {asynchronous:true, evalScripts:true, onComplete:function(request, json) {Element.hide('spinner'); Effect.Appear('view-facet-panel',{ duration: 1.2 }); Element.hide('spinner');}, onLoading:function(request) {Element.show('spinner'); Element.show('spinner');}, requestHeaders:['X-Update', 'view-facet-panel']}) }, false);
-                        //]]>
-                        </script></li><li class="ui-state-default ui-corner-top"><a href="#view-facet-panel" id="link223559324" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Kegg Pathway (EC)</span></a><script type="text/javascript">
-                        //<![CDATA[
-                        Event.observe('link223559324', 'click', function(event) { Element.hide('view-facet-panel'); new Ajax.Updater('view-facet-panel','/metarep/view/pathway/HOT0010-0070M/view.1376338507/kegg_pathways_ec', {asynchronous:true, evalScripts:true, onComplete:function(request, json) {Element.hide('spinner'); Effect.Appear('view-facet-panel',{ duration: 1.2 }); Element.hide('spinner');}, onLoading:function(request) {Element.show('spinner'); Element.show('spinner');}, requestHeaders:['X-Update', 'view-facet-panel']}) }, false);
-                        //]]>
-                        </script></li><li class="ui-state-default ui-corner-top"><a href="#view-facet-panel" id="link1883337445" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Metacyc Pathway (EC)</span></a><script type="text/javascript">
-                        //<![CDATA[
-                        Event.observe('link1883337445', 'click', function(event) { Element.hide('view-facet-panel'); new Ajax.Updater('view-facet-panel','/metarep/view/pathway/HOT0010-0070M/view.1376338507/metacyc_pathways', {asynchronous:true, evalScripts:true, onComplete:function(request, json) {Element.hide('spinner'); Effect.Appear('view-facet-panel',{ duration: 1.2 }); Element.hide('spinner');}, onLoading:function(request) {Element.show('spinner'); Element.show('spinner');}, requestHeaders:['X-Update', 'view-facet-panel']}) }, false);
-                        //]]>
-                        </script></li><li class="ui-state-default ui-corner-top"><a href="{% url "clades" id%}" id="link252830678" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Clades</span></a><script type="text/javascript">
-                        //<![CDATA[
-                        Event.observe('link252830678', 'click', function(event) { Element.hide('view-facet-panel'); new Ajax.Updater('view-facet-panel',"{% url "clades" id %}", {asynchronous:true, evalScripts:true, onComplete:function(request, json) {Element.hide('spinner'); Effect.Appear('view-facet-panel',{ duration: 1.2 }); Element.hide('spinner');}, onLoading:function(request) {Element.show('spinner'); Element.show('spinner');}, requestHeaders:['X-Update', 'view-facet-panel']}) }, false);
-                        //]]>
-                        </script></li></ul><div class="ui-tabs-panel ui-widget-content ui-corner-bottom" id="view-data-tab">		
-                        <p>Page 1 of 1051, showing 20 records out of 21008 total, starting on record 1, ending on 20</p><table cellpadding="0" cellspacing="0"><tbody><tr><th>Peptide ID</th><th>Common Name</th><th>Common Name Source</th><th>Blast Species</th><th>Blast E-Value</th><th>GO ID</th><th>GO Source</th><th>EC ID</th><th>EC Source</th><th>HMM</th></tr><tr class="altrow"><td>JCVI_PEP_metagenomic.orf.1122906897348.1</td><td>hypothetical protein</td><td>CAMERA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>JCVI_PEP_metagenomic.orf.1122906897356.1</td><td>trove</td><td>RF|YP_347677.1|77458172|NC_007492</td><td>Pseudomonas fluorescens PfO-1</td><td>2.07234E-77</td><td></td><td></td><td></td><td></td><td></td></tr><tr class="altrow"><td>JCVI_PEP_metagenomic.orf.1122906897384.1</td><td>hypothetical protein</td><td>CAMERA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>JCVI_PEP_metagenomic.orf.1122906897386.1</td><td>hypothetical protein</td><td>CAMERA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="altrow"><td>JCVI_PEP_metagenomic.orf.1122906897396.1</td><td>L-threonine 3-dehydrogenase<br>L-threonine 3-dehydrogenase</td><td>PRIAM<br>RF|YP_001486845.1|157692383|NC_009848</td><td>Bacillus pumilus SAFR-032</td><td>3.69483E-18</td><td></td><td></td><td>1.1.1.103</td><td>PRIAM</td><td></td></tr><tr><td>JCVI_PEP_metagenomic.orf.1122906897400.1</td><td>hydroxymethylglutaryl-CoA synthase</td><td>RF|YP_001193032.1|146298441|NC_009441</td><td>Flavobacterium johnsoniae UW101</td><td>3.93244E-26</td><td></td><td></td><td></td><td></td><td></td></tr><tr class="altrow"><td>JCVI_PEP_metagenomic.orf.1122906897412.1</td><td>hypothetical protein</td><td>CAMERA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>JCVI_PEP_metagenomic.orf.1122906897424.1</td><td>hypothetical protein</td><td>RF|YP_001353598.1|152981513|NC_009659</td><td>Janthinobacterium sp. Marseille</td><td>2.18443E-55</td><td></td><td></td><td></td><td></td><td>PF03781</td></tr><tr class="altrow"><td>JCVI_PEP_metagenomic.orf.1122906897448.1</td><td>aminotransferase, class V<br>Cysteine desulfurase</td><td>PF00266<br>PRIAM</td><td>Silicibacter pomeroyi DSS-3</td><td>1.44758E-97</td><td>GO:0008152<br>GO:0008483</td><td>PF00266<br>PF00266</td><td>2.8.1.7</td><td>PRIAM</td><td>PF00266<br>PF01053</td></tr><tr><td>JCVI_PEP_metagenomic.orf.1122906897450.1</td><td>hypothetical protein</td><td>CAMERA</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="altrow"><td>JCVI_PEP_metagenomic.orf.1122906897452.1</td><td>Adenosylhomocysteinase<br>S-adenosyl-L-homocysteine hydrolase</td><td>PRIAM<br>PF05221</td><td>Xanthomonas campestris pv. vesicatoria str. 85-10</td><td>1.49088E-43</td><td>GO:0004013<br>GO:0006730</td><td>PF05221<br>PF05221</td><td>3.3.1.1</td><td>PRIAM</td><td>PF05221</td></tr><tr><td>JCVI_PEP_metagenomic.orf.1122906897460.1</td><td>conserved hypothetical protein</td><td>RF|YP_460901.1|85858699|NC_007759</td><td>Syntrophus aciditrophicus SB</td><td>4.48344E-48</td><td></td><td></td><td></td><td></td><td></td></tr><tr class="altrow"><td>JCVI_PEP_metagenomic.orf.1122906897472.1</td><td>N-sulfoglucosamine sulfohydrolase<br>probable sulfatase AtsG</td><td>PRIAM<br>RF|NP_866663.1|32473669|NC_005027</td><td>Rhodopirellula baltica SH 1<br>Pirellula sp.</td><td>3.42561E-112</td><td></td><td></td><td>3.10.1.1</td><td>PRIAM</td><td></td></tr><tr><td>JCVI_PEP_metagenomic.orf.1122906897486.1</td><td>multidrug ABC transporter ATP-binding protein<br>Xenobiotic-transporting ATPase</td><td>RF|YP_174997.1|56963266|NC_006582<br>PRIAM</td><td>Bacillus clausii KSM-K16</td><td>4.09555E-23</td><td>GO:0006810<br>GO:0005524<br>GO:0042626<br>GO:0009898<br>GO:0043190</td><td>PF00005<br>PF00005<br>PF00005<br>PF00005<br>PF00005</td><td>3.6.3.44</td><td>PRIAM</td><td>PF00005</td></tr><tr class="altrow"><td>JCVI_PEP_metagenomic.orf.1122906897488.1</td><td>cyclic nucleotide-binding domain</td><td>PF00027</td><td>Bdellovibrio bacteriovorus HD100</td><td>1.50464E-14</td><td>GO:0030551</td><td>PF00027</td><td></td><td></td><td>PF00027</td></tr><tr><td>JCVI_PEP_metagenomic.orf.1122906897490.1</td><td>probable Na+-driven multidrug efflux pump</td><td>RF|YP_001613600.1|162451233|NC_010162</td><td>Sorangium cellulosum &amp;apos;So ce 56&amp;apos;</td><td>2.92764E-7</td><td></td><td></td><td></td><td></td><td></td></tr><tr class="altrow"><td>JCVI_PEP_metagenomic.orf.1122906897492.1</td><td>pyruvate dehydrogenase E1 component<br>Pyruvate dehydrogenase (acetyl-transferring)</td><td>RF|NP_865502.1|32472508|NC_005027<br>PRIAM</td><td>Rhodopirellula baltica SH 1<br>Pirellula sp.</td><td>7.01167E-42</td><td></td><td></td><td>1.2.4.1</td><td>PRIAM</td><td></td></tr><tr><td>JCVI_PEP_metagenomic.orf.1122906897496.1</td><td>hypothetical protein</td><td>RF|YP_168045.1|56697675|NC_003911</td><td>Silicibacter pomeroyi DSS-3</td><td>2.80849E-34</td><td></td><td></td><td></td><td></td><td></td></tr><tr class="altrow"><td>JCVI_PEP_metagenomic.orf.1122906897498.1</td><td>putative amiNopeptidase n</td><td>GB|ABC25604.1|83616159|DQ319894</td><td>Babesia bovis</td><td>2.93405E-7</td><td></td><td></td><td>3.4.11.2</td><td>RF|YP_683512.1|110680505|NC_008209</td><td></td></tr><tr><td>JCVI_PEP_metagenomic.orf.1122906897500.1</td><td>conserved hypothetical protein</td><td>RF|YP_001766159.1|170734212|NC_010508</td><td>Burkholderia cenocepacia MC0-3<br>Burkholderia ambifaria MC40-6<br>Burkholderia ambifaria AMMD<br>Burkholderia cenocepacia HI2424<br>Burkholderia cenocepacia AU 1054<br>Burkholderia sp. 383<br>Burkholderia sp.</td><td>5.73325E-11</td><td></td><td></td><td></td><td></td><td>PF04380</td></tr></tbody></table><div class="paging"><div class="disabled">&lt;&lt; previous</div>| <span class="current">1</span>| <span><a href="http://jcvi.org/metarep/view/index/HOT0010-0070M/2">2</a></span>| <span><a href="http://jcvi.org/metarep/view/index/HOT0010-0070M/3">3</a></span>| <span><a href="http://jcvi.org/metarep/view/index/HOT0010-0070M/4">4</a></span>| <span><a href="http://jcvi.org/metarep/view/index/HOT0010-0070M/5">5</a></span>| <span><a href="http://jcvi.org/metarep/view/index/HOT0010-0070M/6">6</a></span>| <span><a href="http://jcvi.org/metarep/view/index/HOT0010-0070M/7">7</a></span>| <span><a href="http://jcvi.org/metarep/view/index/HOT0010-0070M/8">8</a></span>| <span><a href="http://jcvi.org/metarep/view/index/HOT0010-0070M/9">9</a></span><a href="http://jcvi.org/metarep/view/index/HOT0010-0070M/2"> next &gt;&gt;</a></div></div><div class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" id="view-facet-panel"></div></div></div>
-            <!---------------------------------------------------------->
             <script type="text/javascript">
                 jQuery(function() {
                         jQuery("#view-tabs").tabs({ spinner: '<img src="{{ STATIC_URL }}img/ajax.gif"/>' });
@@ -305,7 +98,17 @@
 
         <div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ui-helper-hidden-accessible"></div>
         {% else %}
-        <div id="loading">Processing</div>
+        <p>SymTyper is Running and may take some time to finish. To see the
+        output when Symtyper is done please follow the link:<p>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div id="loading">
+            <a href="{% url "status" id %}">http:/{% url "status" id %}</a>
+        </div>
         {% endif %}
+    {% endblock %}
     </body>
 </html>

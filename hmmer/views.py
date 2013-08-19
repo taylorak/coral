@@ -43,10 +43,25 @@ def listTable(tablePath):
         return [i.strip().split() for i in tsv]
 """
 
+def csv2list(csvPath):
+    try:
+        with open(csvPath) as tsv:
+            counts = []
+            all = [line.strip().split() for line in tsv]
+            headers = all[0]
+
+            if len(headers) > 1:
+                for row in all[1:]:
+                    counts.append(dict(zip(headers, row)))
+                return counts,headers
+    except:
+        pass
+    return None,None
+
 def servFile(request, ready, filename, fPath, fsize):
     response = HttpResponse(mimetype='application/force-download')
-    if(not Status.SUCCESS):
-        return response
+    #if(not Status.SUCCESS):
+    #    return response
     #response['Content-Type'] = contentType
     response['Content-Disposition'] = 'attachment; filename=%s' %(smart_str( filename  ) ) 
     response['X-Sendfile'] = urllib.quote(fPath)
@@ -101,7 +116,7 @@ def inputFormDisplay(request):
     if request.method == 'POST':
         form = InputForm(request.POST, request.FILES)
         if form.is_valid():
-            
+
             # create UID
             sym_task = symTyperTask.objects.create()
             sym_task.UID =  str(sym_task.id) + '.' + str(time.time()) 
@@ -131,7 +146,7 @@ def clades(request,id):
         sym_task = symTyperTask.objects.get(UID = id)
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse("form"))
- 
+
     output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput")
     ready,redirect = taskReady(sym_task.celeryUID)
     if ready == True:
@@ -141,7 +156,7 @@ def clades(request,id):
             all_counts = {}
             all = [line.strip().split() for line in tsv]
             all_headers = all[0][1:]
-    
+
             for row in all[1:]:
                 total = hit = no_hit = low = ambiguous = percentages = 0
                 site = row[0]
@@ -162,14 +177,14 @@ def clades(request,id):
 
             all = [line.strip().split() for line in tsv]
             detailed_headers = all[0][1:]
-            
+
             for row in all[1:]:
                 data = []
                 site = row[0]
                 for column in row[1:]:
                     data.append(column)
                 detailed_counts[site] = dict(zip(detailed_headers, data))
-                    
+
 
 #        ALL_dict = searchTable(os.path.join(path,'ALL_counts.tsv'),site)
 #        DETAILED_dict = searchTable(os.path.join(path,'DETAILED_counts.tsv'),site)
@@ -177,10 +192,12 @@ def clades(request,id):
         return redirect
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
-    return render_to_response('clades.html',RequestContext(request, {'dirs':dirs,'all_counts':all_counts,'detailed_counts':detailed_counts,'all_headers':all_headers,'detailed_headers':detailed_headers}))
+    return render_to_response('clades.html',RequestContext(request, {'dirs':dirs,'id':id,'all_counts':all_counts,'detailed_counts':detailed_counts,'all_headers':all_headers,'detailed_headers':detailed_headers}))
 
 @csrf_exempt
 def blast(request,id):
+    #downloads = ['ALL_counts.tsv','DETAILED_counts.tsv']
+    downloads = {}
     unique_counts = None
     try: 
         sym_task = symTyperTask.objects.get(UID = id)
@@ -190,34 +207,43 @@ def blast(request,id):
     output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "blastResults")
     ready,redirect = taskReady(sym_task.celeryUID)
     if ready == True:
+        downloads = {}
+        """
         try:
             with open(os.path.join(output,"UNIQUE_subtypes_count.tsv")) as tsv:
                 unique_counts = []
                 all = [line.strip().split() for line in tsv]
                 unique_headers = all[0]
-                
+
                 if len(unique_headers) > 1:
                     for row in all[1:]:
                         unique_counts.append(dict(zip(unique_headers, row)))
         except:
             pass
+        """
+        downloads["UNIQUE_subtypes_count.tsv"] = csv2list(os.path.join(output,"UNIQUE_subtypes_count.tsv"))
+        downloads["SHORTNEW_subtypes_count.tsv"] = csv2list(os.path.join(output,"SHORTNEW_subtypes_count.tsv"))
+        downloads["PERFECT_subtypes_count.tsv"] = csv2list(os.path.join(output,"PERFECT_subtypes_count.tsv"))
+        unique_counts,unique_headers = csv2list(os.path.join(output,"UNIQUE_subtypes_count.tsv"))
+        shortnew_counts,shortnew_headers = csv2list(os.path.join(output,"SHORTNEW_subtypes_count.tsv"))
+        perfect_counts, perfect_headers = csv2list(os.path.join(output,"PERFECT_subtypes_count.tsv"))
     elif redirect:
         return redirect
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
-    return render_to_response('blast.html',RequestContext(request, {'unique_counts':unique_counts}))
+    return render_to_response('blast.html',RequestContext(request, {'shortnew_counts':shortnew_counts,'shortnew_headers':shortnew_headers, 'unique_counts':unique_counts, 'unique_headers':unique_headers,'perfect_counts':perfect_counts,'perfect_headers':perfect_headers,'downloads':downloads,'id':id}))
 
 def status(request,id):
-#    dirs = ALLtable = DETAILEDtable = headers = message = None
+    #    dirs = ALLtable = DETAILEDtable = headers = message = None
     dirs = None
     downloads = ['ALL_counts.tsv','DETAILED_counts.tsv']
-    
+
     output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput")
     try: 
         sym_task = symTyperTask.objects.get(UID = id)
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse("form"))
-        
+
     ready,redirect = taskReady(sym_task.celeryUID)
     if ready == True:
         dirs = [d for d in os.listdir(output) if os.path.isdir(os.path.join(output,d))]
@@ -232,6 +258,96 @@ def status(request,id):
 #    return render_to_response('tabs.html',RequestContext(request,{'dirs': dirs,'id':id}))
 #    return render_to_response('status.html',RequestContext(request, {'message':message,'dirs':dirs,'downloads':downloads,'id':id,'ALLtable':ALLtable,'DETAILEDtable':DETAILEDtable}))
 
+def dlAll(request, id):
+    try:
+        sym_task = symTyperTask.objects.get(UID=id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse("form"))
+
+    ready,redirect = taskReady(sym_task.celeryUID)
+    if ready == True:
+        fPath = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput","ALL_counts.tsv")
+        fsize = os.stat(fPath).st_size
+        filename = "ALL_counts.tsv"
+        return servFile(request, ready, filename, fPath, fsize)
+    elif redirect:
+        return redirect
+    else:
+        return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
+
+def dlDetailed(request, id):
+    try:
+        sym_task = symTyperTask.objects.get(UID=id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse("form"))
+
+    ready,redirect = taskReady(sym_task.celeryUID)
+    if ready == True:
+        fPath = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput","DETAILED_counts.tsv")
+        fsize = os.stat(fPath).st_size
+        filename = "DETAILED_counts.tsv"
+        return servFile(request, ready, filename, fPath, fsize)
+    elif redirect:
+        return redirect
+    else:
+        return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
+
+
+def dlPerfect(request, id):
+    try:
+        sym_task = symTyperTask.objects.get(UID=id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse("form"))
+
+    ready,redirect = taskReady(sym_task.celeryUID)
+    if ready == True:
+        fPath = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "blastResults","PEFECT_subtypes_count.tsv")
+        fsize = os.stat(fPath).st_size
+        filename = "PERFECT_subtypes_counts.tsv"
+        return servFile(request, ready, filename, fPath, fsize)
+    elif redirect:
+        return redirect
+    else:
+        return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
+
+
+def dlUnique(request, id):
+    try:
+        sym_task = symTyperTask.objects.get(UID=id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse("form"))
+
+    ready,redirect = taskReady(sym_task.celeryUID)
+    if ready == True:
+        fPath = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "blastResults","UNIQUE_subtypes_count.tsv")
+        fsize = os.stat(fPath).st_size
+        filename = "UNIQUE_subtypes_count.tsv"
+        return servFile(request, ready, filename, fPath, fsize)
+    elif redirect:
+        return redirect
+    else:
+        return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
+
+
+def dlShortnew(request, id):
+    try:
+        sym_task = symTyperTask.objects.get(UID=id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse("form"))
+
+    ready,redirect = taskReady(sym_task.celeryUID)
+    if ready == True:
+        fPath = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "blastResults","SHORTNEW_subtypes_count.tsv")
+        fsize = os.stat(fPath).st_size
+        filename = "SHORTNEW_subtypes__count.tsv"
+        return servFile(request, ready, filename, fPath, fsize)
+    elif redirect:
+        return redirect
+    else:
+        return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
+
+
+
 """
 def chart(request,id,site):
     path = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput")
@@ -239,7 +355,7 @@ def chart(request,id,site):
         sym_task = symTyperTask.objects.get(UID = id)
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse("form"))
- 
+
     ready,redirect = taskReady(sym_task.celeryUID)
 
     if ready == True:
@@ -256,7 +372,7 @@ def preview(request, id, filename):
         sym_task = symTyperTask.objects.get(UID = id)
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse("form"))
- 
+
     ready,redirect = taskReady(sym_task.celeryUID)
     if ready == True:
         table = listTable(os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput",str(filename)))         
@@ -266,20 +382,4 @@ def preview(request, id, filename):
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
     return render_to_response('preview.html',RequestContext(request, {'table':table}))
 """
-
-def download(request, id, filename):
-    try:
-        sym_task = symTyperTask.objects.get(UID=id)
-    except ObjectDoesNotExist:
-        return HttpResponseRedirect(reverse("form"))
- 
-    ready,redirect = taskReady(sym_task.celeryUID)
-    if ready == True:
-        fPath = listTable(os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput",str(filename)))         
-        fsize = os.stat(fPath).st_size
-        return servFile(request, ready, filename, fPath, fsize)
-    elif redirect:
-        return redirect
-    else:
-        return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
 

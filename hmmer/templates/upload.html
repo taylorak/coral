@@ -2,11 +2,14 @@
 
 {% block head %}
 <title>File Form</title>
-<!--<link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />--!>
+<link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />
 {% endblock %}
 
 {% block body %}
 
+<br />
+<br />
+<div id="form-wrapper">
 <fieldset class="form-wrapper">
     <legend>SymTyper:</legend>
 
@@ -22,4 +25,5 @@
 
     </form>
 </fieldset>
+</div>
 {% endblock %}
