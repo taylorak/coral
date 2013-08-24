@@ -18,15 +18,39 @@
             {% for key in all_headers %}
             <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
             {% endfor %}
-            <td><div id="chart_div_{{dir}}"></div></td>
+            <td>
+                <a class="chart_fetcher" href="{% url 'chart' id dir  %}">View Chart</a>
+                <div class="test" style="display:none"></div>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+
+<script type="text/javascript">
+    $(".chart_fetcher").click( function(event) {
+        event.preventDefault();
+        var that = this;
+        if ($(".test").is(":hidden")) {
+            $(".test").slideDown("slow",function() {
+                $(this).load($(that).attr("href"));
+                $(that).html("Remove Chart");
+            });
+        } else {
+            $(".test").hide();
+            $(that).html("View Chart")
+        }
+     })
+</script>
+
+
+<!--
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">
-
+/*
 // Load the Visualization API and the piechart package.
 google.load('visualization', '1.0', {'packages':['corechart'],"callback":drawChart});
 
@@ -61,9 +85,8 @@ function drawChart() {
     var chart_{{dir}} = new google.visualization.PieChart(document.getElementById('chart_div_{{dir}}'));
     chart_{{dir}}.draw(data_{{dir}}, options_{{dir}});
     {% endfor %}
-}
-</script>
-
-
+} */
+</script> 
+-->
 
 {% endblock %}

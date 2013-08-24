@@ -3,6 +3,7 @@
 {% block head %}
 <title>SymTyper</title>
 <link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />
+
 {% endblock %}
 
 {% block body %}
@@ -52,7 +53,7 @@
                         </script>
                         </li>
 
-                        <li><a href="#view-facet-panel" id="blast" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Subtypes</span></a>
+                        <li><a href="#view-facet-panel " id="blast" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Subtypes</span></a>
                         <script type="text/javascript">
                         //<![CDATA[
                         Event.observe('blast', 'click', function(event) { 

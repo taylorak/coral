@@ -1,5 +1,4 @@
 # Create your views here.
-#from django.contrib.auth.decorators import login_required
 from django.template import RequestContext 
 from django.http import HttpResponseRedirect,HttpResponse
 from django.shortcuts import render_to_response
@@ -8,13 +7,14 @@ from models import InputForm,symTyperTask
 from tasks import handleForm 
 from django.conf import settings
 from django.utils.encoding import smart_str 
+from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt
 import os
 import time
 import csv
 import urllib
-from django.core.urlresolvers import reverse
-from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.csrf import csrf_exempt
+
 
 
 ### MOVE LATER
@@ -23,7 +23,7 @@ def writeFile(origin,destination):
         for chunk in origin.chunks():
             dest.write(chunk)
 
-"""
+
 def searchTable(tablePath,site):
     site = str(site)
     with open(tablePath) as reader:
@@ -37,7 +37,7 @@ def searchTable(tablePath,site):
         except:
             pass
     return {}
-
+"""
 def listTable(tablePath):
     with open(tablePath) as tsv:
         return [i.strip().split() for i in tsv]
@@ -86,12 +86,6 @@ def servFile(request, ready, filename, fPath, fsize):
         if(len(buf) != 0):
             response.write(buf) 
     return response
-
-
-#class Status:
-#    SUCCESS = 1
-#    FAILURE = 2 
-#    PENDING = 3
 
 def taskReady(celeryID, redirect = "error"):
     task = AsyncResult(celeryID)
@@ -185,14 +179,11 @@ def clades(request,id):
                     data.append(column)
                 detailed_counts[site] = dict(zip(detailed_headers, data))
 
-
-#        ALL_dict = searchTable(os.path.join(path,'ALL_counts.tsv'),site)
-#        DETAILED_dict = searchTable(os.path.join(path,'DETAILED_counts.tsv'),site)
     elif redirect:
         return redirect
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
-    return render_to_response('clades.html',RequestContext(request, {'dirs':dirs,'id':id,'all_counts':all_counts,'detailed_counts':detailed_counts,'all_headers':all_headers,'detailed_headers':detailed_headers}))
+    return render_to_response('clades.html',RequestContext(request, {'id':id,'dirs':dirs,'id':id,'all_counts':all_counts,'detailed_counts':detailed_counts,'all_headers':all_headers,'detailed_headers':detailed_headers}))
 
 @csrf_exempt
 def blast(request,id):
@@ -247,16 +238,12 @@ def status(request,id):
     ready,redirect = taskReady(sym_task.celeryUID)
     if ready == True:
         dirs = [d for d in os.listdir(output) if os.path.isdir(os.path.join(output,d))]
-#        ALLtable = listTable(os.path.join(output,"ALL_counts.tsv"))        
-#        DETAILEDtable = listTable(os.path.join(output,"DETAILED_counts.tsv"))
     elif redirect:
         return redirect
     else:
         message = "pending..."
 
     return render_to_response('main.html',RequestContext(request,{'dirs': dirs,'id':id}))
-#    return render_to_response('tabs.html',RequestContext(request,{'dirs': dirs,'id':id}))
-#    return render_to_response('status.html',RequestContext(request, {'message':message,'dirs':dirs,'downloads':downloads,'id':id,'ALLtable':ALLtable,'DETAILEDtable':DETAILEDtable}))
 
 def dlAll(request, id):
     try:
@@ -348,25 +335,28 @@ def dlShortnew(request, id):
 
 
 
-"""
 def chart(request,id,site):
-    path = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput")
+
+    detailed_counts = detailed_headers = None
     try:
         sym_task = symTyperTask.objects.get(UID = id)
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse("form"))
 
+    output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput")
     ready,redirect = taskReady(sym_task.celeryUID)
 
     if ready == True:
-        ALL_dict = searchTable(os.path.join(path,'ALL_counts.tsv'),site)
-        DETAILED_dict = searchTable(os.path.join(path,'DETAILED_counts.tsv'),site)
+
+        detailed_counts = searchTable(os.path.join(output,'DETAILED_counts.tsv'),site)
+
     elif redirect:
         return redirect
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
-    return render_to_response('chart.html',RequestContext(request, {'ALL_dict':ALL_dict,'DETAILED_dict':DETAILED_dict}))
+    return render_to_response('chart.html',RequestContext(request, {'id':id,'site':site,'detailed_counts':detailed_counts}))
 
+"""
 def preview(request, id, filename):
     try:
         sym_task = symTyperTask.objects.get(UID = id)
