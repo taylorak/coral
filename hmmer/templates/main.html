@@ -19,72 +19,19 @@
                     <li><a href="#">Crumbs</a></li>
                 </ul>
 
-              <!--  <h2>View<span class="selected_library">HOT0010-0070M (HOTS vertical ocean depth profile)</span>
-                    <span id="spinner" style="display: none;"><img src="{{ STATIC_URL }}img/ajax-loader.gif" alt="" width="25px"></span>
-                </h2> --!>
-
                 <div id="view-tabs">
                     <ul>
                         <li><a href="#view-data-tab">Summary</a></li>
 
-                        <li><a href="#view-facet-panel" id="clades" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Clades</span></a>
-                        <script type="text/javascript">
-                        //<![CDATA[
-                        Event.observe('clades', 'click', function(event) { 
-                            Element.hide('view-facet-panel'); 
-                            new Ajax.Updater('view-facet-panel','{% url 'clades' id %}', {
-                                asynchronous:true, 
-                                evalScripts:true, 
-                                onComplete:function(request, json) {
-                                //    Element.hide('spinner'); 
-                                    Effect.Appear('view-facet-panel',{ 
-                                        duration: 1.2 
-                                    }); 
-                                //    Element.hide('spinner');
-                                }, 
-                                //onLoading:function(request) {
-                                //    Element.show('spinner'); 
-                                //    Element.show('spinner');
-                                //}, 
-                                requestHeaders:['X-Update', 'view-facet-panel']
-                            }) 
-                        }, false);
-                        //]]>
-                        </script>
-                        </li>
+                        <li><a href="{% url 'clades' id %}">Clades</a></li>
 
-                        <li><a href="#view-facet-panel " id="blast" onclick=" event.returnValue = false; return false;" title="view-facet-panel"><span>Subtypes</span></a>
-                        <script type="text/javascript">
-                        //<![CDATA[
-                        Event.observe('blast', 'click', function(event) { 
-                            Element.hide('view-facet-panel'); 
-                            new Ajax.Updater('view-facet-panel','{% url 'blast' id %}', {
-                                asynchronous:true, 
-                                evalScripts:true, 
-                                onComplete:function(request, json) {
-                                //    Element.hide('spinner'); 
-                                    Effect.Appear('view-facet-panel',{ 
-                                        duration: 1.2 
-                                    }); 
-                                //    Element.hide('spinner');
-                                }, 
-                                //onLoading:function(request) {
-                                //    Element.show('spinner'); 
-                                //    Element.show('spinner');
-                                //}, 
-                                requestHeaders:['X-Update', 'view-facet-panel']
-                            }) 
-                        }, false);
-                        //]]>
-                        </script>
-                        </li>
+                        <li><a href="{% url 'blast' id %}">Subtypes</a></li>
    
                     </ul>
 
                     <div id="view-data-tab">
                         <div style="text-align:left;padding-top:10px; padding-bottom:5px;font-weight:bold; border-width:1px;border-bottom-style:solid;font-size:1.2em;background-color:#FFFFFF;">Under Construction</div>
                     </div>
-                    <div id="view-facet-panel"></div>
                 </div>
 
             <script type="text/javascript">
