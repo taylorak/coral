@@ -206,3 +206,10 @@ table tr td {
     height: 200px;
     margin: auto;
 }
+
+#tab_container {
+    padding: 1.3em 0.2em !important;
+    overflow: auto;
+    height: 500px;
+}
+

@@ -6,6 +6,7 @@
 <div id="chart_div_{{ site }}"></div>
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
 <script type="text/javascript">
 
 // Load the Visualization API and the piechart package.
@@ -27,7 +28,9 @@ function drawChart() {
             ]);
 
     // Set chart options
-    var options = {'title':'DETAILED_counts',
+    var options = {
+        'title':'DETAILED_counts',
+        'backgroundColor': 'transparent',
         'width':400,
         'height':300};
 

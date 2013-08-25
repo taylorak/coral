@@ -19,28 +19,29 @@
             <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
             {% endfor %}
             <td>
-                <a class="chart_fetcher" href="{% url 'chart' id dir  %}">View Chart</a>
-                <div class="test" style="display:none"></div>
+                <a class="link" href="{% url 'chart' id dir  %}">View Chart</a>
+                <div class="display" style="display:none"></div>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
 
 <script type="text/javascript">
-    $(".chart_fetcher").click( function(event) {
+    $(".link").click( function(event) {
         event.preventDefault();
         var that = this;
-        if ($(".test").is(":hidden")) {
-            $(".test").slideDown("slow",function() {
+        var next = $(this).next(".display");
+        if ($(next).is(":hidden")) {
+            $(next).slideDown("slow",function() {
                 $(this).load($(that).attr("href"));
                 $(that).html("Remove Chart");
             });
         } else {
-            $(".test").hide();
+            $(next).hide();
             $(that).html("View Chart")
         }
      })

@@ -11,7 +11,8 @@
     {% if dirs %}	
         <div id="content">	
 
-            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/view.css"><div class="view-panel">
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/view.css">
+            <div class="view-panel">
 
                 <ul id="breadcrumb">
                     <li><a href="#" title="Dashboard"><img src="{{ STATIC_URL }}img/home.png" alt="Dashboard" class="home"></a></li>
@@ -34,12 +35,14 @@
                     </div>
                 </div>
 
-            <script type="text/javascript">
-                jQuery(function() {
-                        jQuery("#view-tabs").tabs({ spinner: '<img src="{{ STATIC_URL }}img/ajax.gif"/>' });
-                        jQuery("#view-tabs").tabs( "option", "disabled", []);
-                        });
-            </script>		
+                <script type="text/javascript">
+                    $(function() {
+                        $("#view-tabs").tabs({
+                            spinner: '<img src="{{ STATIC_URL }}img/ajax.gif"/>',
+                            show: { effect: "fadeIn",duration:1000 } 
+                            });
+                    });
+                </script>		
             </div>			
             <div id="footer"></div>
         </div>
