@@ -19,7 +19,7 @@ import urllib
 
 ### MOVE LATER
 def writeFile(origin,destination):
-    with open(destination,'w') as dest:
+    with open(destination,'w') as dest: 
         for chunk in origin.chunks():
             dest.write(chunk)
 
@@ -187,7 +187,6 @@ def clades(request,id):
 
 @csrf_exempt
 def blast(request,id):
-    #downloads = ['ALL_counts.tsv','DETAILED_counts.tsv']
     downloads = {}
     unique_counts = None
     try: 

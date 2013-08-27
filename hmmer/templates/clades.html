@@ -3,91 +3,51 @@
 
 {% block body %}
 
-<table cellspacing="0" cellpadding="10px">
-    <tbody>
-        <th>sample</th>
-        {% for header in all_headers %}
-        <th>{{header}}</th> 
-        {% endfor %}
-        <th><a href="{% url "dlDetailed" id %}">Detailed Count</a></th>
-
-        {% for dir in dirs %}
-        <tr class="{% cycle '' 'altrow' %}">
-            <td>{{ dir }}</td>
-
-            {% for key in all_headers %}
-            <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
+<div id="tab_container">
+    <table cellspacing="0" cellpadding="10px">
+        <tbody>
+            <th>sample</th>
+            {% for header in all_headers %}
+            <th>{{header}}</th> 
             {% endfor %}
-            <td>
-                <a class="link" href="{% url 'chart' id dir  %}">View Chart</a>
-                <div class="display" style="display:none"></div>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+            <th><a href="{% url "dlDetailed" id %}">Detailed Count</a></th>
 
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
+            {% for dir in dirs %}
+            <tr class="{% cycle '' 'altrow' %}">
+                <td>{{ dir }}</td>
 
-<script type="text/javascript">
-    $(".link").click( function(event) {
-        event.preventDefault();
-        var that = this;
-        var next = $(this).next(".display");
-        if ($(next).is(":hidden")) {
-            $(next).slideDown("slow",function() {
-                $(this).load($(that).attr("href"));
-                $(that).html("Remove Chart");
-            });
-        } else {
-            $(next).hide();
-            $(that).html("View Chart")
-        }
-     })
-</script>
+                {% for key in all_headers %}
+                <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
+                {% endfor %}
+                <td>
+                    <a class="link" href="{% url 'chart' id dir  %}">View Chart</a>
+                    <div class="display" style="display:none"></div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(".link").click( function(event) {
+            event.preventDefault();
+            var that = this;
+            var next = $(this).next(".display");
+            if ($(next).is(":hidden")) {
+                $(next).slideDown("slow",function() {
+                    $(this).load($(that).attr("href"));
+                    $(that).html("Remove Chart");
+                    });
+                } else {
+                    $(next).hide();
+                    $(that).html("View Chart")
+                }
+        })
+    </script>
 
 
-<!--
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-<script type="text/javascript">
-/*
-// Load the Visualization API and the piechart package.
-google.load('visualization', '1.0', {'packages':['corechart'],"callback":drawChart});
-
-// Set a callback to run when the Google Visualization API is loaded.
-//google.setOnLoadCallback(drawChart);
-
-function drawChart() {
-
-    // Create the data table.
-    {% for dir in dirs %}
-    var data_{{dir}} = new google.visualization.DataTable();
-    data_{{dir}}.addColumn('string', 'clade'); 
-    data_{{dir}}.addColumn('number', 'amount'); 
-    data_{{dir}}.addRows([
-        {% for key in detailed_headers %} 
-        ['{{ key }}',{{ detailed_counts | dictvalue:dir | dictvalue:key }}],
-        {% endfor %}
-            ]);
-    {% endfor %}
-
-    // Set chart options
-    {% for dir in dirs %}
-    var options_{{dir}} = {
-        'width':500,
-        'height':300,
-        backgroundColor: 'transparent'
-    };
-    {% endfor %}
-
-    // Instantiate and draw our chart, passing in some options.
-    {% for dir in dirs %}
-    var chart_{{dir}} = new google.visualization.PieChart(document.getElementById('chart_div_{{dir}}'));
-    chart_{{dir}}.draw(data_{{dir}}, options_{{dir}});
-    {% endfor %}
-} */
-</script> 
--->
-
+</div>
 {% endblock %}
