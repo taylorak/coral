@@ -4,8 +4,7 @@
 {% block body %}
 
 <div id="tab_container">
-    <table cellspacing="0" cellpadding="10px">
-        <tbody>
+    <table cellspacing="0" cellpadding="10px"> <tbody>
             <th>sample</th>
             {% for header in all_headers %}
             <th>{{header}}</th> 
@@ -21,7 +20,7 @@
                 {% endfor %}
                 <td>
                     <a class="link" href="{% url 'chart' id dir  %}">View Chart</a>
-                    <div class="display" style="display:none"></div>
+                    <div class="display" ><p>hi<p></div>
                 </td>
             </tr>
             {% endfor %}
@@ -36,16 +35,30 @@
             event.preventDefault();
             var that = this;
             var next = $(this).next(".display");
-            if ($(next).is(":hidden")) {
-                $(next).slideDown("slow",function() {
-                    $(this).load($(that).attr("href"));
-                    $(that).html("Remove Chart");
+
+      /*      if ($(next).is(":hidden")) {
+
+                if($(next).is(":empty")){
+                $(next).hide();
+                $.ajax({
+                    type: "GET",
+                    url: $(that).attr("href"),
+                    success: function(result){
+                    $(next).html(result).slideDown("slow");
+                    $(that).html("Remove Chart");    
+                    }
+                });
+                }else {
+                    $(next).slideDown("normal",function() {
+                        $(that).html("Remove Chart");
                     });
-                } else {
-                    $(next).hide();
-                    $(that).html("View Chart")
                 }
-        })
+            } else {
+                $(next).hide();
+                $(that).html("View Chart")
+            } */
+
+            $(next).dialog("hi");
     </script>
 
 
