@@ -121,9 +121,9 @@ def inputFormDisplay(request):
             os.makedirs(dataDir)
 
             writeFile(request.FILES['fasta_File'],os.path.join(dataDir,"input.fasta"))
-            writeFile(request.FILES['sample_File'],os.path.join(dataDir,"input.ids"))
+            writeFile(request.FILES['sample_File'],os.path.join(dataDir,"samples.ids"))
 
-            task = handleForm.delay(os.path.join("data","input.fasta"),os.path.join("data","input.ids"),parentDir)
+            task = handleForm.delay(os.path.join("data","input.fasta"),os.path.join("data","samples.ids"),parentDir)
 
             sym_task.celeryUID = task.id
             sym_task.save()
@@ -222,6 +222,13 @@ def blast(request,id):
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
     return render_to_response('blast.html',RequestContext(request, {'shortnew_counts':shortnew_counts,'shortnew_headers':shortnew_headers, 'unique_counts':unique_counts, 'unique_headers':unique_headers,'perfect_counts':perfect_counts,'perfect_headers':perfect_headers,'downloads':downloads,'id':id}))
+
+def multiples(request,id):
+
+    return render_to_response('multiples.html',RequestContext(request, {}))
+
+def tree(request,id):
+    return render_to_response('tree.html',RequestContext(request, {}))
 
 def status(request,id):
     #    dirs = ALLtable = DETAILEDtable = headers = message = None
