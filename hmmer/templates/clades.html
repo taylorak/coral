@@ -31,35 +31,20 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
 
     <script type="text/javascript">
-        //.link
         $(".link").click( function(event) {
             event.preventDefault();
             var that = this;
             var next = $(this).next(".display");
-            $("next").html("hello")
-            $("next").dialog();
-        })
-      /**      if ($(next).is(":hidden")) {
-
-                if($(next).is(":empty")){
-                $(next).hide();
-                $.ajax({
-                    type: "GET",
-                    url: $(that).attr("href"),
-                    success: function(result){
-                    $(next).html(result).slideDown("slow");
-                    $(that).html("Remove Chart");    
-                    }
-                });
-                }else {
-                    $(next).slideDown("normal",function() {
-                        $(that).html("Remove Chart");
+            if ($(next).is(":hidden")) {
+                $(next).slideDown("slow",function() {
+                    $(this).load($(that).attr("href"));
+                    $(that).html("Remove Chart");
                     });
+                } else {
+                    $(next).hide();
+                    $(that).html("View Chart")
                 }
-            } else {
-                $(next).hide();
-                $(that).html("View Chart")
-            } **/
+        })
     </script>
 
 </div>
