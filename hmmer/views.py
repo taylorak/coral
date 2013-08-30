@@ -224,7 +224,8 @@ def blast(request,id):
     return render_to_response('blast.html',RequestContext(request, {'shortnew_counts':shortnew_counts,'shortnew_headers':shortnew_headers, 'unique_counts':unique_counts, 'unique_headers':unique_headers,'perfect_counts':perfect_counts,'perfect_headers':perfect_headers,'downloads':downloads,'id':id}))
 
 def multiples(request,id):
-
+    output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "blastResults")
+    dirs = [d for d in os.listdir(output) if os.path.isdir(os.path.join(output,d))]
     return render_to_response('multiples.html',RequestContext(request, {}))
 
 def tree(request,id):

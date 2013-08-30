@@ -17,9 +17,8 @@
                 <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
                 {% endfor %}
                 <td>
-                    <button id="opener">open the dialog</button>
                     <a class="link" href="{% url 'chart' id dir  %}">View Chart</a>
-                    <div class="display" ></div>
+                    <div class="display" style="display:none;" ></div>
 
                 </td>
             </tr>
