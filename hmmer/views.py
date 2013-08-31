@@ -97,8 +97,6 @@ def taskReady(celeryID, redirect = "error"):
             return False, HttpResponseRedirect(reverse(redirect))
     else:
         return False, None
-
-
 ###
 
 def errorPage(request):
@@ -224,15 +222,50 @@ def blast(request,id):
     return render_to_response('blast.html',RequestContext(request, {'shortnew_counts':shortnew_counts,'shortnew_headers':shortnew_headers, 'unique_counts':unique_counts, 'unique_headers':unique_headers,'perfect_counts':perfect_counts,'perfect_headers':perfect_headers,'downloads':downloads,'id':id}))
 
 def multiples(request,id):
+    try: 
+        sym_task = symTyperTask.objects.get(UID = id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse("form"))
+
     output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "blastResults")
-    dirs = [d for d in os.listdir(output) if os.path.isdir(os.path.join(output,d))]
+    ready,redirect = taskReady(sym_task.celeryUID)
+    if ready == True:
+        dirs = [d for d in os.listdir(output) if os.path.isdir(os.path.join(output,d))]
+        
+        unique_counts,unique_headers = csv2list(os.path.join(output,"UNIQUE_subtypes_count.tsv"))
+        shortnew_counts,shortnew_headers = csv2list(os.path.join(output,"SHORTNEW_subtypes_count.tsv"))
+        perfect_counts, perfect_headers = csv2list(os.path.join(output,"PERFECT_subtypes_count.tsv"))
+    elif redirect:
+        return redirect
+    else:
+        return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
+
     return render_to_response('multiples.html',RequestContext(request, {}))
 
 def tree(request,id):
+    try: 
+        sym_task = symTyperTask.objects.get(UID = id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse("form"))
+
+    output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "blastResults")
+    ready,redirect = taskReady(sym_task.celeryUID)
+    if ready == True:
+        files = ['a','b','c','d','e','f','g','h','i']
+    #    dirs = [d for d in files if os.path.isdir()]
+        dirs = [d for d in os.listdir(output) if os.path.isdir(os.path.join(output,d))]
+        
+        unique_counts, unique_headers = csv2list(os.path.join(output,"UNIQUE_subtypes_count.tsv"))
+        shortnew_counts, shortnew_headers = csv2list(os.path.join(output,"SHORTNEW_subtypes_count.tsv"))
+        perfect_counts, perfect_headers = csv2list(os.path.join(output,"PERFECT_subtypes_count.tsv"))
+    elif redirect:
+        return redirect
+    else:
+        return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
+
     return render_to_response('tree.html',RequestContext(request, {}))
 
 def status(request,id):
-    #    dirs = ALLtable = DETAILEDtable = headers = message = None
     dirs = None
     downloads = ['ALL_counts.tsv','DETAILED_counts.tsv']
 
