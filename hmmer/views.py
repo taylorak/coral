@@ -12,9 +12,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 import os
 import time
-import csv
+#import csv
 import urllib
-
 
 
 ### MOVE LATER
@@ -37,11 +36,6 @@ def searchTable(tablePath,site):
         except:
             pass
     return {}
-"""
-def listTable(tablePath):
-    with open(tablePath) as tsv:
-        return [i.strip().split() for i in tsv]
-"""
 
 def csv2list(csvPath):
     try:
@@ -57,6 +51,24 @@ def csv2list(csvPath):
     except:
         pass
     return None,None
+
+def csv2list2(csvPath):
+    try:
+        with open(csvPath) as tsv:
+            counts = []
+            all = [line.strip().split() for line in tsv]
+            headers = all[0]
+            headers.insert(0,'sample')
+
+            if len(headers) > 1:
+                for row in all[1:]:
+                    if len(row) == len(headers):
+                        counts.append(dict(zip(headers, row)))
+                return counts,headers
+    except:
+        pass
+    return None,None
+
 
 def servFile(request, ready, filename, fPath, fsize):
     response = HttpResponse(mimetype='application/force-download')
@@ -195,23 +207,6 @@ def blast(request,id):
     output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "blastResults")
     ready,redirect = taskReady(sym_task.celeryUID)
     if ready == True:
-        downloads = {}
-        """
-        try:
-            with open(os.path.join(output,"UNIQUE_subtypes_count.tsv")) as tsv:
-                unique_counts = []
-                all = [line.strip().split() for line in tsv]
-                unique_headers = all[0]
-
-                if len(unique_headers) > 1:
-                    for row in all[1:]:
-                        unique_counts.append(dict(zip(unique_headers, row)))
-        except:
-            pass
-        """
-        downloads["UNIQUE_subtypes_count.tsv"] = csv2list(os.path.join(output,"UNIQUE_subtypes_count.tsv"))
-        downloads["SHORTNEW_subtypes_count.tsv"] = csv2list(os.path.join(output,"SHORTNEW_subtypes_count.tsv"))
-        downloads["PERFECT_subtypes_count.tsv"] = csv2list(os.path.join(output,"PERFECT_subtypes_count.tsv"))
         unique_counts,unique_headers = csv2list(os.path.join(output,"UNIQUE_subtypes_count.tsv"))
         shortnew_counts,shortnew_headers = csv2list(os.path.join(output,"SHORTNEW_subtypes_count.tsv"))
         perfect_counts, perfect_headers = csv2list(os.path.join(output,"PERFECT_subtypes_count.tsv"))
@@ -219,7 +214,7 @@ def blast(request,id):
         return redirect
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
-    return render_to_response('blast.html',RequestContext(request, {'shortnew_counts':shortnew_counts,'shortnew_headers':shortnew_headers, 'unique_counts':unique_counts, 'unique_headers':unique_headers,'perfect_counts':perfect_counts,'perfect_headers':perfect_headers,'downloads':downloads,'id':id}))
+    return render_to_response('blast.html',RequestContext(request, {'shortnew_counts':shortnew_counts,'shortnew_headers':shortnew_headers, 'unique_counts':unique_counts, 'unique_headers':unique_headers,'perfect_counts':perfect_counts,'perfect_headers':perfect_headers,'id':id}))
 
 def multiples(request,id):
     try: 
@@ -227,14 +222,16 @@ def multiples(request,id):
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse("form"))
 
-    output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "blastResults")
+    corrected = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "resolvedMultiples","correctedMultiplesHits","corrected")
+    resolved = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "resolvedMultiples","correctedMultiplesHits","resolved")
+
     ready,redirect = taskReady(sym_task.celeryUID)
     if ready == True:
-        dirs = [d for d in os.listdir(output) if os.path.isdir(os.path.join(output,d))]
+        dirs = [d for d in os.listdir(corrected) if os.path.isdir(os.path.join(corrected,d))]
         
-        unique_counts,unique_headers = csv2list(os.path.join(output,"UNIQUE_subtypes_count.tsv"))
-        shortnew_counts,shortnew_headers = csv2list(os.path.join(output,"SHORTNEW_subtypes_count.tsv"))
-        perfect_counts, perfect_headers = csv2list(os.path.join(output,"PERFECT_subtypes_count.tsv"))
+        #unique_counts,unique_headers = csv2list(os.path.join(output,"UNIQUE_subtypes_count.tsv"))
+        #shortnew_counts,shortnew_headers = csv2list(os.path.join(output,"SHORTNEW_subtypes_count.tsv"))
+        #perfect_counts, perfect_headers = csv2list(os.path.join(output,"PERFECT_subtypes_count.tsv"))
     elif redirect:
         return redirect
     else:
@@ -248,22 +245,27 @@ def tree(request,id):
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse("form"))
 
-    output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "blastResults")
+    output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "placementInfo")
     ready,redirect = taskReady(sym_task.celeryUID)
     if ready == True:
-        files = ['a','b','c','d','e','f','g','h','i']
-    #    dirs = [d for d in files if os.path.isdir()]
-        dirs = [d for d in os.listdir(output) if os.path.isdir(os.path.join(output,d))]
-        
-        unique_counts, unique_headers = csv2list(os.path.join(output,"UNIQUE_subtypes_count.tsv"))
-        shortnew_counts, shortnew_headers = csv2list(os.path.join(output,"SHORTNEW_subtypes_count.tsv"))
-        perfect_counts, perfect_headers = csv2list(os.path.join(output,"PERFECT_subtypes_count.tsv"))
+        files = ['A','B','C','D','E','F','G','H','I']
+        tables = {}
+        for f in files:
+            if os.path.isdir(os.path.join(output,f)):
+               tables[f] = csv2list2(os.path.join(output,f,"treenodeCladeDist.tsv"))
+            else:
+                tables[f] = None
+
+        #dirs = [d for d in os.listdir(output) if os.path.isdir(os.path.join(output,d))]
+        #A_counts, A_headers = csv2list2(os.path.join(output,"A","treenodeCladeDist.tsv"))
+        #B_counts, B_headers = csv2list2(os.path.join(output,"B","treenodeCladeDist.tsv"))
+        #C_counts, C_headers = csv2list2(os.path.join(output,"C","treenodeCladeDist.tsv"))
     elif redirect:
         return redirect
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
 
-    return render_to_response('tree.html',RequestContext(request, {}))
+    return render_to_response('tree.html',RequestContext(request, {"files":files,"tables":tables}))
 
 def status(request,id):
     dirs = None
@@ -396,20 +398,4 @@ def chart(request,id,site):
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
     return render_to_response('chart.html',RequestContext(request, {'id':id,'site':site,'detailed_counts':detailed_counts}))
 
-"""
-def preview(request, id, filename):
-    try:
-        sym_task = symTyperTask.objects.get(UID = id)
-    except ObjectDoesNotExist:
-        return HttpResponseRedirect(reverse("form"))
-
-    ready,redirect = taskReady(sym_task.celeryUID)
-    if ready == True:
-        table = listTable(os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput",str(filename)))         
-    elif redirect:
-        return redirect
-    else:
-        return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
-    return render_to_response('preview.html',RequestContext(request, {'table':table}))
-"""
 

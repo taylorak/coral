@@ -17,30 +17,41 @@
                 <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
                 {% endfor %}
                 <td>
-                    <a class="link" href="{% url 'chart' id dir  %}">View Chart</a>
-                    <div class="display" style="display:none;" ></div>
+                    <a class="opener" href="{% url 'chart' id dir  %}">View Chart</a>
 
+                    
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
+    <div id="dialog" title="Pie Chart"><div id="loader"></div><div>
+
     <script type="text/javascript">
-        $(".link").click( function(event) {
-            event.preventDefault();
-            var that = this;
-            var next = $(this).next(".display");
-            if ($(next).is(":hidden")) {
-                $(next).slideDown("slow",function() {
-                    $(this).load($(that).attr("href"));
-                    $(that).html("Remove Chart");
-                    });
-                } else {
-                    $(next).hide();
-                    $(that).html("View Chart")
-                }
-        })
-    </script>
+        $(function() {
+            $("#dialog" ).dialog({
+                modal: true,
+                autoOpen: false,
+                show: {
+                    effect: "blind",
+                    duration: 1000
+                },
+                hide: {
+                effect: "explode",
+                duration: 1000
+                },
+                width: 415,
+                height: 400,
+            });
+
+            $( ".opener" ).click(function(event) {
+                event.preventDefault();
+                $("#loader").load($(this).attr("href"),function(){
+                    $("#dialog").dialog("open");
+                })
+            });
+         });
+   </script>
 
 </div>

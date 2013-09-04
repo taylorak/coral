@@ -3,32 +3,132 @@
 <div id="tab_container">
 
     <div id="multiAccordion2">
-        <h3><a href="#">tab 1</a></h3>
+        {% for file in files %}
+
+        <h3><a href="#">{{ file }}</a></h3>
         <div>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            {% for key,value in tables.items %}
+            {% ifequal file key %}
+            {% if value.1 %} 
+            <table cellspacing="0" cellpadding="10px">
+                <tbody>
+                    {% for row in value.0 %}
+                    <tr class="{% cycle '' 'altrow' as alt %}">
+                        {% if forloop.first %}
+                        {% for header in  value.1 %}
+                        <th>{{ header }}</th>
+                        {% endfor %}
+                        </tr><tr class="{% cycle alt  %}">
+                        {% endif %}
+
+                        {% for header in value.1 %}
+                        <td> {{ row| dictvalue:header }}  </td>
+                        {% endfor %}
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No Data Available</p>
+            {% endif %}
+            {% endifequal %}
+
+            {% endfor %}
+
         </div>
-        <h3><a href="#">tab 2</a></h3>
+        {% endfor %}
+
+        <!--<h3><a href="#">A</a></h3>
+        <div>
+            {% if A_headers %}
+            <table cellspacing="0" cellpadding="10px">
+                <tbody>
+                    {% for row in A_counts %}
+                    <tr class="{% cycle '' 'altrow' as alt %}">
+                        {% if forloop.first %}
+                        {% for header in A_headers %}
+                        <th>{{ header }}</th>
+                        {% endfor %}
+                        </tr><tr class="{% cycle alt  %}">
+                        {% endif %}
+                        {% for header in A_headers %}
+                        <td> {{ row | dictvalue:header }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+
+            {% else %}
+            Nothing 
+            {% endif %}
+        </div>
+        <h3><a href="#">B</a></h3>
         <div>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eu mauris nulla, at cursus nulla. Morbi venenatis, risus sit amet ultricies pharetra, lorem purus tempor risus, vel tincidunt lectus nisi sit amet neque. Aenean sit amet nibh orci, a gravida eros. Pellentesque dignissim, libero eu congue semper, mauris metus molestie nisi, vitae posuere felis leo ac lectus. Mauris a nisi eget sapien varius eleifend vel vel nibh. In placerat commodo blandit. Vivamus sagittis ante sed nisl sodales id luctus diam dapibus. Proin a felis tristique nulla rhoncus sollicitudin. Nullam sit amet neque augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce at nisi sapien.
         </div>
-        <h3><a href="#">tab 3</a></h3>
+        <h3><a href="#">C</a></h3>
         <div>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            {% if C_headers %}
+            <table cellspacing="0" cellpadding="10px">
+                <tbody>
+                    {% for row in C_counts %}
+                    <tr class="{% cycle '' 'altrow' as alt %}">
+                        {% if forloop.first %}
+                        {% for header in C_headers %}
+                        <th>{{ header }}</th>
+                        {% endfor %}
+                        </tr><tr class="{% cycle alt  %}">
+                        {% endif %}
+                        {% for header in C_headers %}
+                        <td> {{ row | dictvalue:header }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% else %}
+            Nothing 
+            {% endif %}
+
         </div>
-        <h3><a href="#">tab 4</a></h3>
+        <h3><a href="#">D</a></h3>
         <div>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eu mauris nulla, at cursus nulla. Morbi venenatis, risus sit amet ultricies pharetra, lorem purus tempor risus, vel tincidunt lectus nisi sit amet neque. Aenean sit amet nibh orci, a gravida eros. Pellentesque dignissim, libero eu congue semper, mauris metus molestie nisi, vitae posuere felis leo ac lectus. Mauris a nisi eget sapien varius eleifend vel vel nibh. In placerat commodo blandit. Vivamus sagittis ante sed nisl sodales id luctus diam dapibus. Proin a felis tristique nulla rhoncus sollicitudin. Nullam sit amet neque augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce at nisi sapien.
-        </div>
+        </div>-->
     </div>
 
 
     <script type="text/javascript">
         $(function() {
                 $('#multiAccordion2').multiAccordion({
-                    active: [1,2]
+active: [
+{% for file in files %}
+{% for key,value in tables.items %}
+{% ifequal file key %}
+{% if value.1 %} 
+{{ forloop.parentloop.counter0 }}, 
+{% endif %}
+{% endifequal %}
+{% endfor %}
+{% endfor %}]
+});
+                $('#multiAccordion2').multiAccordion("option", "active", [
+                    {% for file in files %}
+                    {% for key,value in tables.items %}
+                    {% ifequal file key %}
+                    {% if value.1 %} 
+                    {{  forloop.parentloop.counter0 }},
+                    {% endif %}
+                    {% endifequal %}
+                    {% endfor %}
+                    {% endfor %}
+                    ]);
                 });
-                $('#multiAccordion2').multiAccordion("option", "active", [0, 3]);
-        });
     </script>
 
 </div>
