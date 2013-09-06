@@ -52,7 +52,7 @@ def csv2list(csvPath):
         pass
     return None,None
 
-def csv2list2(csvPath):
+def treeCsv(csvPath):
     try:
         with open(csvPath) as tsv:
             counts = []
@@ -65,6 +65,28 @@ def csv2list2(csvPath):
                     if len(row) == len(headers):
                         counts.append(dict(zip(headers, row)))
                 return counts,headers
+    except:
+        pass
+    return None,None
+
+def multiplesCsv(csvPath):
+    try:
+        with open(csvPath) as tsv:
+            table = []
+            headers = []
+            first = True
+
+            for line in tsv:
+                row = []
+                splitTabs = line.strip().split('\t')
+                for tab in splitTabs:
+                    data = tab.strip().split(':',1)
+                    if first:
+                        headers.append(data[0])
+                    row.append(data[1].strip())
+                table.append(dict(zip(headers,row)))
+                first = False
+            return table, headers
     except:
         pass
     return None,None
@@ -143,7 +165,6 @@ def inputFormDisplay(request):
         form = InputForm()
     return render_to_response('upload.html',RequestContext(request, {'form':form}))
 
-@csrf_exempt
 def clades(request,id):
     dirs = all_counts = detailed_counts = all_headers = detailed_headers = None
     try: 
@@ -195,7 +216,6 @@ def clades(request,id):
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
     return render_to_response('clades.html',RequestContext(request, {'id':id,'dirs':dirs,'id':id,'all_counts':all_counts,'detailed_counts':detailed_counts,'all_headers':all_headers,'detailed_headers':detailed_headers}))
 
-@csrf_exempt
 def blast(request,id):
     downloads = {}
     unique_counts = None
@@ -222,22 +242,32 @@ def multiples(request,id):
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse("form"))
 
-    corrected = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "resolvedMultiples","correctedMultiplesHits","corrected")
-    resolved = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "resolvedMultiples","correctedMultiplesHits","resolved")
+    corrected = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "resolveMultiples","correctedMultiplesHits","corrected")
+    resolved = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "resolveMultiples","correctedMultiplesHits","resolved")
 
     ready,redirect = taskReady(sym_task.celeryUID)
     if ready == True:
-        dirs = [d for d in os.listdir(corrected) if os.path.isdir(os.path.join(corrected,d))]
-        
-        #unique_counts,unique_headers = csv2list(os.path.join(output,"UNIQUE_subtypes_count.tsv"))
-        #shortnew_counts,shortnew_headers = csv2list(os.path.join(output,"SHORTNEW_subtypes_count.tsv"))
-        #perfect_counts, perfect_headers = csv2list(os.path.join(output,"PERFECT_subtypes_count.tsv"))
+        files = ['A','B','C','D','E','F','G','H','I']
+        correctedTable = {}
+        resolvedTable = {}
+
+        for f in files:
+            if os.path.exists(os.path.join(corrected,f)):
+               correctedTable[f] = multiplesCsv(os.path.join(corrected,f))
+            else:
+                correctedTable[f] = None
+
+            if os.path.exists(os.path.join(resolved,f)):
+               resolvedTable[f] = multiplesCsv(os.path.join(resolved,f))
+            else:
+                resolvedTable[f] = None
+
     elif redirect:
         return redirect
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
 
-    return render_to_response('multiples.html',RequestContext(request, {}))
+    return render_to_response('multiples.html',RequestContext(request, {"files":files,"correctedTable":correctedTable,"resolvedTable":resolvedTable}))
 
 def tree(request,id):
     try: 
@@ -251,8 +281,9 @@ def tree(request,id):
         files = ['A','B','C','D','E','F','G','H','I']
         tables = {}
         for f in files:
-            if os.path.isdir(os.path.join(output,f)):
-               tables[f] = csv2list2(os.path.join(output,f,"treenodeCladeDist.tsv"))
+            #if os.path.isdir(os.path.join(output,f)):
+            if os.path.exists(os.path.join(output,f,"treenodeCladeDist.tsv")):
+               tables[f] = treeCsv(os.path.join(output,f,"treenodeCladeDist.tsv"))
             else:
                 tables[f] = None
 
@@ -269,7 +300,7 @@ def tree(request,id):
 
 def status(request,id):
     dirs = None
-    downloads = ['ALL_counts.tsv','DETAILED_counts.tsv']
+    #downloads = ['ALL_counts.tsv','DETAILED_counts.tsv']
 
     output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput")
     try: 
