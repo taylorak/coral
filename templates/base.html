@@ -5,16 +5,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}js/jquery-ui-1.10.3/themes/smoothness/jquery-ui-1.10.3.custom.css">
+        <!--<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}js/jquery-ui-1.10.3/themes/smoothness/jquery-ui-1.10.3.custom.css">-->
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui-1.10.3.custom.css">
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/cake.generic.css">
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/fancyBox/jquery.fancybox.css">
         
-        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3/jquery-1.9.1.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.multi-accordion-1.5.3.js""></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.multi-accordion-1.5.3.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.fancybox.pack.js"></script>
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-
-
-           
               
         <style type="text/css">
             /*demo page css*/	
@@ -25,7 +25,6 @@
             ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
             ul#icons span.ui-icon {float: left; margin: 0 4px;}
         </style>
-
 
        {% block head %}{% endblock %}
     </head>

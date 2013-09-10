@@ -39,7 +39,7 @@ form {
 .view-panel{
 	position: absolute;
 	height: 550px;
-	width: 90%;
+	width: 90%; 
 }
 
 #view-tabs {
@@ -76,8 +76,6 @@ form {
 	height:20px;
 	padding-bottom:10px;
 }
-
-
 
 .ui-tabs-panel {
 	padding:0em 0.2em !important;	
