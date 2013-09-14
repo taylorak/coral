@@ -1,137 +1,19 @@
-# Create your views here.
 from django.template import RequestContext 
-from django.http import HttpResponseRedirect,HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from celery.result import AsyncResult 
-from models import InputForm,symTyperTask 
-from tasks import handleForm 
 from django.conf import settings
-from django.utils.encoding import smart_str 
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.csrf import csrf_exempt
-import os
-import time
-#import csv
-import urllib
 
+from celery.result import AsyncResult 
 
-### MOVE LATER
-def writeFile(origin,destination):
-    with open(destination,'w') as dest: 
-        for chunk in origin.chunks():
-            dest.write(chunk)
+from general import writeFile,searchTable,csv2list,treeCsv,multiplesCsv,servFile,taskReady
+from models import InputForm,symTyperTask 
+from tasks import handleForm 
 
+import os,time,urllib
 
-def searchTable(tablePath,site):
-    site = str(site)
-    with open(tablePath) as reader:
-        try:
-            headers = reader.next()
-            keys = [header.split('_')[0] for header in headers.split()[1:]]
-            for row in reader:
-                row2 = row.split()
-                if row2[0] == site:
-                    return dict(zip(keys, row2[1:]))
-        except:
-            pass
-    return {}
-
-def csv2list(csvPath):
-    try:
-        with open(csvPath) as tsv:
-            counts = []
-            all = [line.strip().split() for line in tsv]
-            headers = all[0]
-
-            if len(headers) > 1:
-                for row in all[1:]:
-                    counts.append(dict(zip(headers, row)))
-                return counts,headers
-    except:
-        pass
-    return None,None
-
-def treeCsv(csvPath):
-    try:
-        with open(csvPath) as tsv:
-            counts = []
-            all = [line.strip().split() for line in tsv]
-            headers = all[0]
-            headers.insert(0,'sample')
-
-            if len(headers) > 1:
-                for row in all[1:]:
-                    if len(row) == len(headers):
-                        counts.append(dict(zip(headers, row)))
-                return counts,headers
-    except:
-        pass
-    return None,None
-
-def multiplesCsv(csvPath):
-    try:
-        with open(csvPath) as tsv:
-            table = []
-            headers = []
-            first = True
-
-            for line in tsv:
-                row = []
-                splitTabs = line.strip().split('\t')
-                for tab in splitTabs:
-                    data = tab.strip().split(':',1)
-                    if first:
-                        headers.append(data[0])
-                    row.append(data[1].strip())
-                table.append(dict(zip(headers,row)))
-                first = False
-            return table, headers
-    except:
-        pass
-    return None,None
-
-
-def servFile(request, ready, filename, fPath, fsize):
-    response = HttpResponse(mimetype='application/force-download')
-    #if(not Status.SUCCESS):
-    #    return response
-    #response['Content-Type'] = contentType
-    response['Content-Disposition'] = 'attachment; filename=%s' %(smart_str( filename  ) ) 
-    response['X-Sendfile'] = urllib.quote(fPath)
-    response['Content-Transfer-Encoding'] = "binary"
-    response['Expires'] = 0
-    response['Accept-Ranges'] = 'bytes'
-    response['Cache-Control'] = "private"
-    response['Pragma'] = 'private'
-    httprange = request.META.get("HTTP_RANGE", None)
-    if(httprange):
-        rng = httprange.split("=")
-        cnt = rng[-1].split("-")
-        response['Content-Length'] = fsize - int(cnt[0])
-        response['Content-Range'] = str(httprange) + str(response['Content-Length']) + "/" + str(fsize)
-    else:
-        response['Content-Length'] = fsize
-    with open(fPath) as outfile:
-        buf = outfile.read(4096)
-        while len(buf) == 4096:
-            response.write(buf)
-            buf = outfile.read(4096)
-        if(len(buf) != 0):
-            response.write(buf) 
-    return response
-
-def taskReady(celeryID, redirect = "error"):
-    task = AsyncResult(celeryID)
-
-    if task.ready():
-        if task.successful():
-            return True, None
-        else:
-            return False, HttpResponseRedirect(reverse(redirect))
-    else:
-        return False, None
-###
+# Create your views here.
 
 def errorPage(request):
     # fix me with the correct page to display
@@ -139,6 +21,7 @@ def errorPage(request):
 
 
 def inputFormDisplay(request):
+    """Displays input form that takes fasta and ids files."""
     if request.method == 'POST':
         form = InputForm(request.POST, request.FILES)
         if form.is_valid():
@@ -147,7 +30,6 @@ def inputFormDisplay(request):
             sym_task = symTyperTask.objects.create()
             sym_task.UID =  str(sym_task.id) + '.' + str(time.time()) 
             parentDir = os.path.join(settings.SYMTYPER_HOME,sym_task.UID)
-            #os.makedirs(parentDir)
 
             dataDir = os.path.join(parentDir,'data')
             os.makedirs(dataDir)
@@ -166,7 +48,9 @@ def inputFormDisplay(request):
     return render_to_response('upload.html',RequestContext(request, {'form':form}))
 
 def clades(request,id):
+    """Displays clade results."""
     dirs = all_counts = detailed_counts = all_headers = detailed_headers = None
+
     try: 
         sym_task = symTyperTask.objects.get(UID = id)
     except ObjectDoesNotExist:
@@ -216,9 +100,11 @@ def clades(request,id):
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
     return render_to_response('clades.html',RequestContext(request, {'id':id,'dirs':dirs,'id':id,'all_counts':all_counts,'detailed_counts':detailed_counts,'all_headers':all_headers,'detailed_headers':detailed_headers}))
 
-def blast(request,id):
+def subtypes(request,id):
+    """Displays subtypes results."""
     downloads = {}
     unique_counts = None
+
     try: 
         sym_task = symTyperTask.objects.get(UID = id)
     except ObjectDoesNotExist:
@@ -234,9 +120,10 @@ def blast(request,id):
         return redirect
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
-    return render_to_response('blast.html',RequestContext(request, {'shortnew_counts':shortnew_counts,'shortnew_headers':shortnew_headers, 'unique_counts':unique_counts, 'unique_headers':unique_headers,'perfect_counts':perfect_counts,'perfect_headers':perfect_headers,'id':id}))
+    return render_to_response('subtypes.html',RequestContext(request, {'shortnew_counts':shortnew_counts,'shortnew_headers':shortnew_headers, 'unique_counts':unique_counts, 'unique_headers':unique_headers,'perfect_counts':perfect_counts,'perfect_headers':perfect_headers,'id':id}))
 
 def multiples(request,id):
+    """Displays resolved multiples results."""
     try: 
         sym_task = symTyperTask.objects.get(UID = id)
     except ObjectDoesNotExist:
@@ -244,7 +131,6 @@ def multiples(request,id):
 
     corrected = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "resolveMultiples","correctedMultiplesHits","corrected")
     resolved = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "resolveMultiples","correctedMultiplesHits","resolved")
-
     ready,redirect = taskReady(sym_task.celeryUID)
     if ready == True:
         files = ['A','B','C','D','E','F','G','H','I']
@@ -261,15 +147,14 @@ def multiples(request,id):
                resolvedTable[f] = multiplesCsv(os.path.join(resolved,f))
             else:
                 resolvedTable[f] = None
-
     elif redirect:
         return redirect
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
-
     return render_to_response('multiples.html',RequestContext(request, {"files":files,"correctedTable":correctedTable,"resolvedTable":resolvedTable}))
 
 def tree(request,id):
+    """Displays treenode results."""
     try: 
         sym_task = symTyperTask.objects.get(UID = id)
     except ObjectDoesNotExist:
@@ -281,12 +166,10 @@ def tree(request,id):
         files = ['A','B','C','D','E','F','G','H','I']
         tables = {}
         for f in files:
-            #if os.path.isdir(os.path.join(output,f)):
             if os.path.exists(os.path.join(output,f,"treenodeCladeDist.tsv")):
                tables[f] = treeCsv(os.path.join(output,f,"treenodeCladeDist.tsv"))
             else:
                 tables[f] = None
-
         #dirs = [d for d in os.listdir(output) if os.path.isdir(os.path.join(output,d))]
         #A_counts, A_headers = csv2list2(os.path.join(output,"A","treenodeCladeDist.tsv"))
         #B_counts, B_headers = csv2list2(os.path.join(output,"B","treenodeCladeDist.tsv"))
@@ -295,28 +178,27 @@ def tree(request,id):
         return redirect
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
-
     return render_to_response('tree.html',RequestContext(request, {"files":files,"tables":tables}))
 
 def status(request,id):
-    dirs = None
-    #downloads = ['ALL_counts.tsv','DETAILED_counts.tsv']
+    """Displays main page."""
+    done = False
 
-    output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput")
     try: 
         sym_task = symTyperTask.objects.get(UID = id)
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse("form"))
 
+    output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput")
     ready,redirect = taskReady(sym_task.celeryUID)
     if ready == True:
-        dirs = [d for d in os.listdir(output) if os.path.isdir(os.path.join(output,d))]
+        done = True
     elif redirect:
         return redirect
     else:
-        message = "pending..."
-
-    return render_to_response('main.html',RequestContext(request,{'dirs': dirs,'id':id}))
+        pass
+        #message = "pending..."
+    return render_to_response('main.html',RequestContext(request,{'done': done,'id':id}))
 
 def dlAll(request, id):
     try:
@@ -352,7 +234,6 @@ def dlDetailed(request, id):
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
 
-
 def dlPerfect(request, id):
     try:
         sym_task = symTyperTask.objects.get(UID=id)
@@ -369,7 +250,6 @@ def dlPerfect(request, id):
         return redirect
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
-
 
 def dlUnique(request, id):
     try:
@@ -388,7 +268,6 @@ def dlUnique(request, id):
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
 
-
 def dlShortnew(request, id):
     try:
         sym_task = symTyperTask.objects.get(UID=id)
@@ -406,10 +285,8 @@ def dlShortnew(request, id):
     else:
         return HttpResponseRedirect(reverse("status",args=[sym_task.UID]))
 
-
-
 def chart(request,id,site):
-
+    """Displays pie chart"""
     detailed_counts = detailed_headers = None
     try:
         sym_task = symTyperTask.objects.get(UID = id)
@@ -418,11 +295,8 @@ def chart(request,id,site):
 
     output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "hmmer_parsedOutput")
     ready,redirect = taskReady(sym_task.celeryUID)
-
     if ready == True:
-
         detailed_counts = searchTable(os.path.join(output,'DETAILED_counts.tsv'),site)
-
     elif redirect:
         return redirect
     else:

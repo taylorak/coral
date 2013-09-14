@@ -3,11 +3,13 @@
 {% block head %}
 <title>SymTyper</title>
 <link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />
+{% if not done %}
+    <meta http-equiv="refresh" content="30"/>
+{% endif %}
 {% endblock %}
 
 {% block body %}
-
-    {% if dirs %}	
+    {% if done %}	
         <div id="content">	
 
             <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/view.css">
@@ -25,7 +27,7 @@
 
                         <li><a href="{% url 'clades' id %}">Clades</a></li>
 
-                        <li><a href="{% url 'blast' id %}">Subtypes</a></li>
+                        <li><a href="{% url 'subtypes' id %}">Subtypes</a></li>
 
                         <li><a href="{% url 'multiples' id %}">Resolved Multiples</a></li>
 

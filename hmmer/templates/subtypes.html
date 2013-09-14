@@ -1,0 +1,72 @@
+{% load custom_filters %}
+
+<div id="tab_container">
+    {% if shortnew_counts %}
+
+    <div style="text-align:left;padding-top:10px; padding-bottom:5px;font-weight:bold; border-width:1px;border-bottom-style:solid;font-size:1.2em;background-color:#FFFFFF;"><a href="{% url "dlShortnew" id  %}">Short New Subtypes</a></div>
+    <table cellspacing="0" cellpadding="10px">
+        <tbody>
+            {% for row in shortnew_counts %}
+            <tr class="{% cycle '' 'altrow' as alt %}">
+                {% if forloop.first %}
+                {% for header in shortnew_headers %}
+                <th>{{ header }}</th>
+                {% endfor %}
+                </tr><tr class="{% cycle alt  %}">
+                {% endif %}
+                {% for header in shortnew_headers %}
+                <td> {{ row | dictvalue:header }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+
+    {% if unique_counts %}
+
+    <div style="text-align:left;padding-top:10px; padding-bottom:5px;font-weight:bold; border-width:1px;border-bottom-style:solid;font-size:1.2em;background-color:#FFFFFF;"><a href="{% url "dlUnique" id %}">Unique Subtypes</a></div>
+    <table cellspacing="0" cellpadding="10px">
+        <tbody>
+            {% for row in unique_counts %}
+            <tr class="{% cycle '' 'altrow' as alt %}">
+                {% if forloop.first %}
+                {% for header in unique_headers %}
+                <th>{{ header }}</th>
+                {% endfor %}
+                </tr><tr class="{% cycle alt  %}">
+                {% endif %}
+                {% for header in unique_headers %}
+                <td> {{ row | dictvalue:header }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+
+    {% if perfect_counts %}
+
+    <div style="text-align:left;padding-top:10px; padding-bottom:5px;font-weight:bold; border-width:1px;border-bottom-style:solid;font-size:1.2em;background-color:#FFFFFF;"><a href="{% url "dlPerfect" id %}">Perfect Subtype</a>s</div>
+    <table cellspacing="0" cellpadding="10px">
+        <tbody>
+            {% for row in perfect_counts %}
+            <tr class="{% cycle '' 'altrow' as alt %}">
+                {% if forloop.first %}
+                {% for header in perfect_headers %}
+                <th>{{ header }}</th>
+                {% endfor %}
+                </tr><tr class="{% cycle alt  %}">
+                {% endif %}
+                {% for header in perfect_headers %}
+                <td> {{ row | dictvalue:header }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+</div>
