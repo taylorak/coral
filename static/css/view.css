@@ -23,7 +23,7 @@ CSS for search page
 	position: absolute;
 	width: 106px;
 	left: 92%;
-	top: 57px;
+	top: 0px/*57px;*/
 }
 
 .input {
@@ -39,7 +39,7 @@ form {
 .view-panel{
 	position: absolute;
 	height: 550px;
-	width: 90%; 
+	width: 94%; 
 }
 
 #view-tabs {

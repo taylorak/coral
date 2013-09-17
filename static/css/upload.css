@@ -208,8 +208,11 @@ table tr td {
 }
 
 #tab_container {
-    padding: 1.3em 0.2em !important;
+    /*padding: 1.3em 0.2em !important;*/
     overflow: auto;
     height: 500px;
 }
 
+.ui-tabs .ui-tabs-panel {
+    margin-top: 10px;  
+}
