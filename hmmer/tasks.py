@@ -7,6 +7,7 @@ from celery.task import task
 import os
 #from subprocess import call
 
+
 @task(ignore_results=True)
 def handleForm(fasta, sample, parentDir):
     os.chdir(parentDir)

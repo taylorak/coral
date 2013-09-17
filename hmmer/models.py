@@ -6,8 +6,9 @@ from django.contrib import admin
 # Create your models here.
 
 class symTyperTask(models.Model):
-    celeryUID = models.TextField(null=True,blank=True)
-    UID = models.TextField(null=True,blank=True)
+    celeryUID = models.TextField(null=True, blank=True)
+    UID = models.TextField(null=True, blank=True)
+
 
 class InputForm(forms.Form):
     fasta_File = forms.FileField()
@@ -25,8 +26,9 @@ class InputForm(forms.Form):
             raise forms.ValidationError("extension must be ids")
         return data
 
-class AdminSymTyperTask(admin.ModelAdmin):
-    list_display = ['celeryUID', 'UID']  
 
-     
+class AdminSymTyperTask(admin.ModelAdmin):
+    list_display = ['celeryUID', 'UID']
+
+
 admin.site.register(symTyperTask, AdminSymTyperTask)
