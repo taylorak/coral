@@ -108,26 +108,70 @@ def multiplesCsv(csvPath):
         headers: the csv headers in a list.
 
     """
+    #try:
+        #with open(csvPath) as tsv:
+            #table = []
+            #headers = []
+            #first = True
+
+            #for line in tsv:
+                #row = []
+                #splitTabs = line.strip().split('\t')
+                #for tab in splitTabs:
+                    #data = tab.strip().split(':', 1)
+                    #if first:
+                        #headers.append(data[0])
+                    #row.append(data[1].strip())
+                #table.append(dict(zip(headers, row)))
+                #first = False
+            #return table, headers
+    #except:
+        #pass
+    #return None, None
     try:
         with open(csvPath) as tsv:
+            header = []
             table = []
-            headers = []
+            breakdown = []
+            subtypes = []
             first = True
 
             for line in tsv:
                 row = []
                 splitTabs = line.strip().split('\t')
-                for tab in splitTabs:
+
+                for tab in splitTabs[:3]:
                     data = tab.strip().split(':', 1)
                     if first:
-                        headers.append(data[0])
+                        header.append(data[0])
                     row.append(data[1].strip())
-                table.append(dict(zip(headers, row)))
+                table.append(dict(zip(header, row)))
                 first = False
-            return table, headers
+
+                for tab in splitTabs[3:4]:
+                    dic = {}
+                    data = tab.strip().split(':', 1)
+                    splitSpace = data[1].split(' ')
+                    for space in splitSpace:
+                        info = space.split(':')
+                        dic[info[0]] = int(info[1])
+                    breakdown.append(dic)
+
+                for tab in splitTabs[4:5]:
+                    dic = {}
+                    data = tab.strip().split(':', 1)
+                    commaSpace = data[1].strip().split(',')
+                    for comma in commaSpace[:-1]:
+                        info = comma.strip().split(': ')
+                        dic[info[0]] = int(info[1])
+                    subtypes.append(dic)
+
+            return table, header, breakdown, subtypes
     except:
         pass
-    return None, None
+    return None, None, None, None
+
+
 
 
 def servZip(request, path):
