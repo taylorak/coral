@@ -48,32 +48,32 @@
            </div>
 
 
-    <script type="text/javascript">
-        $(function() {
-                $('#multiAccordion2').multiAccordion({
-active: [
-{% for file in files %}
-{% for key,value in tables.items %}
-{% ifequal file key %}
-{% if value.1 %} 
-{{ forloop.parentloop.counter0 }}, 
-{% endif %}
-{% endifequal %}
-{% endfor %}
-{% endfor %}]
-});
-                $('#multiAccordion2').multiAccordion("option", "active", [
-                    {% for file in files %}
-                    {% for key,value in tables.items %}
-                    {% ifequal file key %}
-                    {% if value.1 %} 
-                    {{  forloop.parentloop.counter0 }},
-                    {% endif %}
-                    {% endifequal %}
-                    {% endfor %}
-                    {% endfor %}
-                    ]);
-                });
-    </script>
+           <script type="text/javascript">
+               $(function() {
+                   $('#multiAccordion2').multiAccordion({
+                           active: [
+                               {% for file in files %}
+                               {% for key,value in tables.items %}
+                               {% ifequal file key %}
+                               {% if value.1 %} 
+                               {{ forloop.parentloop.counter0 }}, 
+                               {% endif %}
+                               {% endifequal %}
+                               {% endfor %}
+                               {% endfor %}]
+                   });
+                   $('#multiAccordion2').multiAccordion("option", "active", [
+                           {% for file in files %}
+                           {% for key,value in tables.items %}
+                           {% ifequal file key %}
+                           {% if value.1 %} 
+                           {{  forloop.parentloop.counter0 }},
+                           {% endif %}
+                           {% endifequal %}
+                           {% endfor %}
+                           {% endfor %}
+                   ]);
+               });
+           </script>
 
-</div>
+       </div>
