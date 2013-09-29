@@ -1,29 +1,45 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>File Form</title>
-<link href="{{ STATIC_URL }}css/upload.css" rel="stylesheet" type="text/css" media="all" />
+        <title>File Form</title>
 {% endblock %}
 
 {% block body %}
-
-<br />
-<br />
-<div id="form-wrapper">
-<fieldset class="form-wrapper">
-    <legend>SymTyper:</legend>
-
-    <form enctype="multipart/form-data" method="post" action=".">
-        <label class="label" for="id_fasta_File">Fasta File:</label>
-        {{ form.fasta_File }}
-
-        <label class="label" for="id_sample_File">Id File:</label>
-        {{ form.sample_File }}
-
-        <input type="submit" value="Submit"/>
-        {% csrf_token %}
-
-    </form>
-</fieldset>
-</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <div class="well">
+                    <form role="form" enctype="multipart/form-data" method="post" action=".">
+                        <h3>SymTyper</h3>
+                        <label class="label" for="id_fasta_File">Fasta File:</label>
+                        {{ form.fasta_File }}
+                        <label class="label" for="id_sample_File">Id File:</label>
+                        {{ form.sample_File }}
+                        <input class="btn btn-primary" type="submit"/>
+                        {% csrf_token %}
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
 {% endblock %}
+
+<!--<br />-->
+<!--<br />-->
+<!--<div id="form-wrapper">-->
+<!--<fieldset class="form-wrapper">-->
+<!--<legend>SymTyper:</legend>-->
+
+<!--<form enctype="multipart/form-data" method="post" action=".">-->
+<!--<label class="label" for="id_fasta_File">Fasta File:</label>-->
+<!--{{ form.fasta_File }}-->
+
+<!--<label class="label" for="id_sample_File">Id File:</label>-->
+<!--{{ form.sample_File }}-->
+
+<!--<input type="submit" value="Submit"/>-->
+<!--{% csrf_token %}-->
+
+<!--</form>-->
+<!--</fieldset>-->
+<!--</div>-->
