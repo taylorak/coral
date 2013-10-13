@@ -1,5 +1,8 @@
 # Django settings for coral project.
-import os;
+import os
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+
+
 PROJECT_ROOT = os.path.join(os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 
 DEBUG = True
@@ -13,8 +16,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_ROOT,'db/event_calendar.db'), # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.path.join(PROJECT_ROOT, 'db/event_calendar.db'),  # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -163,7 +166,12 @@ LOGGING = {
     }
 }
 
-SYMTYPER_HOME = os.path.join(PROJECT_ROOT,"hmmer/files")
+#For request context
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'django.core.context_processors.request',
+)
+
+SYMTYPER_HOME = os.path.join(PROJECT_ROOT, "hmmer/files")
 
 import djcelery
 djcelery.setup_loader()
@@ -174,7 +182,7 @@ BROKER_URL = 'amqp://worker:r@bb1t+w0rker+run@localhost:5672/portal'
 #BROKER_PORT= 5672
 #BROKER_USER= "testuser"
 #BROKER_PASSWORD= "testpass"
-#BROKER_VHOST = "testvhost" 
+#BROKER_VHOST = "testvhost"
 
 # not needed unless want to set up periodic tasks
 #CELERYBEAT_SCHEDULER ="djcelery.schedulers.DatabaseScheduler"

@@ -51,8 +51,12 @@ def inputFormDisplay(request):
             return HttpResponseRedirect(reverse("status", args=[sym_task.UID]))
     else:
         form = InputForm()
-    return render_to_response('upload.html',
-                              RequestContext(request, {'form': form}))
+
+    context = {
+        'form': form,
+    }
+
+    return render_to_response('upload.html', context, context_instance=RequestContext(request))
 
 
 def clades(request, id):
@@ -107,7 +111,18 @@ def clades(request, id):
         return redirect
     else:
         return HttpResponseRedirect(reverse("status", args=[sym_task.UID]))
-    return render_to_response('clades.html', RequestContext(request, {'id': id, 'dirs': dirs, 'id': id, 'all_counts': all_counts, 'detailed_counts': detailed_counts, 'all_headers': all_headers, 'detailed_headers': detailed_headers}))
+
+    context = {
+        'id': id,
+        'dirs': dirs,
+        'id': id,
+        'all_counts': all_counts,
+        'detailed_counts': detailed_counts,
+        'all_headers': all_headers,
+        'detailed_headers': detailed_headers
+    }
+
+    return render_to_response('clades.html', context, context_instance=RequestContext(request))
 
 
 def subtypes(request, id):

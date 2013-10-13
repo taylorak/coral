@@ -1,81 +1,59 @@
+{% extends "base.html" %}
 {% load custom_filters %}
 
-<div class="download">
-    <a href="{% url "dlClades" id %}">
-        <img alt="" title="Download List" src="{{ STATIC_URL }}img/download-large.png">
-    </a>
-</div>
+{% block body %}
 
-<div id="tab_container">
-    <table cellspacing="0" cellpadding="10px"> <tbody>
-            <th>sample</th>
-            {% for header in all_headers %}
-            <th>{{header}}</th> 
-            {% endfor %}
-            <th><a href="{% url "dlDetailed" id %}">Detailed Count</a></th>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="flip-scroll">
+            <table class="table-bordered table-condensed table-striped cf"> 
+                <thead>
+                    <tr>
+                    <th>sample</th>
+                    {% for header in all_headers %}
+                    <th>{{header}}</th> 
+                    {% endfor %}
+                    <th><a href="{% url "dlDetailed" id %}">Detailed Count</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for dir in dirs %}
+                    <tr class="{% cycle '' 'altrow' %}">
+                        <td>{{ dir }}</td>
 
-            {% for dir in dirs %}
-            <tr class="{% cycle '' 'altrow' %}">
-                <td>{{ dir }}</td>
+                        {% for key in all_headers %}
+                        <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
+                        {% endfor %}
+                        <td>
+                            <a class="opener" title="{{ dir }}" rel="group1" href="{% url 'chart' id dir  %}">View Chart</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-                {% for key in all_headers %}
-                <td>{{all_counts|dictvalue:dir|dictvalue:key}}%</td>
-                {% endfor %}
-                <td>
-                    <a class="opener" title="{{ dir }}" rel="group1" href="{% url 'chart' id dir  %}">View Chart</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
-    <!--<a id="fancybox" href="#loader">Click Me</a>-->
-    <!--<div id="dialog" title="Pie Chart"><div id="loader">Hello</div><div>-->
-    
-    <script type="text/javascript">
-        //$(function() {
-            $("a.opener").fancybox({
-               'type': 'ajax',
-               'autoSize': false,
-               'autoCenter': true,
-               'fitToView': true,
-               'width': 350,
-               'height': 300,
-               'helpers': {
-                   'title': {
-                       'type': 'outside'
-                   }
-                },
-               'arrows': false,
-               'scrolling': 'no'
-            }); 
-        //});
-    </script>
+            <script type="text/javascript">
+                $("a.opener").fancybox({
+                        'type': 'ajax',
+                        'autoSize': false,
+                        'autoCenter': true,
+                        'fitToView': true,
+                        'width': 350,
+                        'height': 300,
+                        'helpers': {
+                        'title': {
+                        'type': 'outside'
+                        }
+                        },
+                        'arrows': false,
+                        'scrolling': 'no'
+                        }); 
+</script>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <!--<script type="text/javascript">
-/*        $(function() {
-            $("#dialog" ).dialog({
-                modal: true,
-                autoOpen: false,
-                show: {
-                    effect: "blind",
-                    duration: 1000
-                },
-                hide: {
-                effect: "explode",
-                duration: 1000
-                },
-                width: 415,
-                height: 400,
-            });
-
-            $( ".opener" ).click(function(event) {
-                event.preventDefault();
-                $("#loader").load($(this).attr("href"),function(){
-                    $("#dialog").dialog("open");
-                })
-            });
-         }); */
-   </script>
--->
-</div>
+            {% endblock %}

@@ -2,35 +2,48 @@
 {% load widget_tweaks %}
 
 {% block head %}
-    <title>File Form</title>
-    <script type="text/javascript">
-        $(document)
-        .on('change', '.btn-file :file', function() {
-            var input = $(this),
-            numFiles = input.get(0).files ? input.get(0).files.length : 1,
-            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-            input.trigger('fileselect', [numFiles, label]);
-            });
-            $(document).ready( function() {
-                $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
-                    var input = $(this).parents('.input-group').find(':text'),
-                    log = numFiles > 1 ? numFiles + ' files selected' : label;
-                    if( input.length ) {
-                        input.val(log);
-                    } else {
-                        if( log ) alert(log);
-                    }
-                });
-            }); 
-    </script>
+<title>File Form</title>
 {% endblock %}
 
 {% block body %}
-    <div class="container">
+<div class="container">
+    <div class="col-md-8">
+        <div class="well">
+            <h2>Under Construction</h2>
+            <p>
+            usage: symTyper.py [-h] [-v] [-t THREADS] {clade,subtype,resolveMultipleHits,builPlacementTree,stats} ...
+
+            </p>
+            <p>
+            symTyper Description
+
+            </p>
+            <p>
+            positional arguments: {clade,subtype,resolveMultipleHits,builPlacementTree,stats} Available commands
+            </p>
+
+            <p>
+            positional arguments: {clade,subtype,resolveMultipleHits,builPlacementTree,stats} Available commands
+            optional arguments: -h, --help show this help message and exit -v, --version show program's version number and exit -t THREADS, --threads THREADS
+            </p>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button">Go!</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
         <div class="row">
-            <div class="col-sm-4 col-sm-offset-4">
+            <div class="col-md-12">
                 <form class="well"role="form" enctype="multipart/form-data" method="post" action=".">
-                    
+
                     <div class="form-group">
                         <label for="id_fasta_File">Fasta File:</label>
                         <div class="input-group">
@@ -58,8 +71,50 @@
                     </div>
                     <button class="btn btn-primary" type="submit">Submit</button>
                     {% csrf_token %}
-            </form>
+                </form>
+            </div>
         </div>
+        {% if form.errors %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-danger">
+                    <p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
+                    <ul>
+                        {% for field in form %}
+                        {% if field.errors %}
+                        <li>{{ field.errors|striptags }}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+
     </div>
+
+    <script type="text/javascript">
+        $(document)
+    .on('change', '.btn-file :file', function() {
+            var input = $(this),
+            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+            });
+$(document).ready( function() {
+        $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+            var input = $(this).parents('.input-group').find(':text'),
+            log = numFiles > 1 ? numFiles + ' files selected' : label;
+            if( input.length ) {
+            input.val(log);
+            } else {
+            if( log ) alert(log);
+            }
+            });
+        }); 
+</script>
+
 {% endblock %}
 
