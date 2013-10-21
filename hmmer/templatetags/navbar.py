@@ -1,6 +1,7 @@
 from django import template
 from django.conf import settings
-from hmmer.general import csv2list
+from hmmer.general import csv2list, taskReady
+from hmmer.models import symTyperTask
 import os
 
 register = template.Library()
@@ -36,6 +37,15 @@ def navbar(context, id):
         else:
             trees[letter] = None
 
+    done = False
+
+    if id:
+        sym_task = symTyperTask.objects.get(UID=id)
+
+        ready, redirect = taskReady(sym_task.celeryUID)
+        if ready:
+            done = True
+
     context = {
         'id': id,
         'unique_counts': unique_counts,
@@ -44,6 +54,7 @@ def navbar(context, id):
         'multiples': multiples,
         'trees': trees,
         'request': context['request'],
+        'done': done,
     }
 
     return context

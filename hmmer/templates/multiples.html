@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load custom_filters %}
 
+{% block head %}
+<title>Multiples</title>
+{% endblock %}
+
+
+
 {% block body %}
 
 {% url 'corrected' id file as corrected %}

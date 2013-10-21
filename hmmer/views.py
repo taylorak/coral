@@ -323,7 +323,7 @@ def chart(request, id, site):
 
 
 def index(request, id):
-    """Displays main page."""
+    """Displays index page."""
     done = False
 
     try:

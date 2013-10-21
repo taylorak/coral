@@ -21,7 +21,7 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        {% if request.path == form %}
+                        {% if not done %}
                         <li{% if request.path == documentation %}  class="active"{% endif %}><a href="#">Documentation</a></li>
                         <li{% if request.path == contact %}  class="active"{% endif %}><a href="#">Contact</a></li>
                         {% else %}
@@ -51,7 +51,9 @@
                             {% endfor %}
                         </ul>
                         </li>
+                    {% endif %}
                     </ul>
+                    {% if id %}
                     <ul class="nav navbar-nav pull-right">
                         <li class="divider-vertical"></li>
                         <li><a href="{{ form }}">Upload</a></li>

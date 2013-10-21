@@ -1,10 +1,11 @@
 #SymTyper Webpage#
 Bioinformatics Web Portal
-
-##Description##
-Coming Soon...
-
-##To Do##
-* Find better way to deal with dictionary keys in Multiples tab.
-* Work on better way to read in file for Multiples tab.
-* Add download buttons for each tab.
+##Overview
+Web App for running SymTyper and viewing the outputs.
+##Installation
+Coming Soon...  
+##Usage
+Input fasta and ids file to run SymTyper.  
+Use the navbar to view the outputs.  
+##Credits
+Mahdi Belcaid, HIMB
