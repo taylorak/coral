@@ -7,6 +7,7 @@
 
 {% block body %}
 <div class="container">
+    <div class="row">
     <div class="col-md-8">
         <div class="well">
             <h2>Under Construction</h2>
@@ -40,12 +41,13 @@
     </div>
 
     <div class="col-md-4">
-        <div class="row">
+        <div class="well">
             <div class="col-md-12">
-                <form class="well"role="form" enctype="multipart/form-data" method="post" action=".">
+                <form role="form" enctype="multipart/form-data" method="post" action=".">
 
-                    <div class="form-group">
+                    <div class="form-group{% if form.fasta_File.errors %} has-error{% endif %}">
                         <label for="id_fasta_File">Fasta File:</label>
+
                         <div class="input-group">
                             <span class="input-group-btn">
                                 <span class="btn btn-primary btn-file">
@@ -55,10 +57,22 @@
                             </span>
                             <input class="form-control" type="text" readonly="">
                         </div>
+
+                        {% if form.fasta_File.errors %}
+                        <span class="help-block">
+                            <ol>
+                        {% for error in form.fasta_File.errors %}
+                            <li><strong> {{ error|escape }} </strong></li>
+                        {% endfor %}
+                            </ol>
+                        </span>
+                        {% endif %}
                     </div>
 
-                    <div class="form-group">
+
+                    <div class="form-group{% if form.sample_File.errors %} has-error{% endif %}">
                         <label for="id_sample_File">Id File:</label>
+
                         <div class="input-group">
                             <span class="input-group-btn">
                                 <span class="btn btn-primary btn-file"> 
@@ -68,28 +82,43 @@
                             </span>
                             <input class="form-control" type="text" readonly="">
                         </div>
+
+                        {% if form.sample_File.errors %}
+                        <span class="help-block">
+                            <ol>
+                        {% for error in form.sample_File.errors %}
+                            <li><strong> {{ error|escape }} </strong></li>
+                        {% endfor %}
+                            </ol>
+                        </span>
+                        {% endif %}
+
                     </div>
+
                     <button class="btn btn-primary" type="submit">Submit</button>
                     {% csrf_token %}
                 </form>
             </div>
         </div>
-        {% if form.errors %}
-        <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-danger">
-                    <p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
-                    <ul>
-                        {% for field in form %}
-                        {% if field.errors %}
-                        <li>{{ field.errors|striptags }}</li>
-                        {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-        {% endif %}
+    </div>
+</div>
+
+<!--{% if form.errors %}-->
+<!--<div class="row">-->
+    <!--<div class="col-md-12">-->
+        <!--<div class="alert alert-danger">-->
+            <!--<p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>-->
+            <!--<ul>-->
+                <!--{% for field in form %}-->
+                <!--{% if field.errors %}-->
+                <!--<li>{{ field.errors|striptags }}</li>-->
+                <!--{% endif %}-->
+                <!--{% endfor %}-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--{% endif %}-->
 
 
 
@@ -114,7 +143,7 @@ $(document).ready( function() {
             }
             });
         }); 
-</script>
+    </script>
 
-{% endblock %}
+    {% endblock %}
 

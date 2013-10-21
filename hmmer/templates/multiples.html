@@ -1,139 +1,131 @@
+{% extends "base.html" %}
 {% load custom_filters %}
 
-<div class="download">
-    <a href="{% url "dlMultiples" id %}">
-        <img alt="" title="Download List" src="{{ STATIC_URL }}img/download-large.png"> 
-        </a>
-    </div>
+{% block body %}
 
-    <div id="tab_container">
+{% url 'corrected' id file as corrected %}
+{% url 'resolved' id file as resolved %}
 
-        <div id="multiAccordion">
-            {% for file in files %}
+<div class="container">
 
-                <h3><a href="#">{{ file }}</a></h3>
-                <div>
+    <h2><a href="#">Multiples-{{ file }}</a></h2>
 
-                    <div style="text-align:left;padding-top:10px; padding-bottom:5px;font-weight:bold; border-width:1px;border-bottom-style:solid;font-size:1.2em;background-color:#FFFFFF;"><a href="#">Corrected</a></div>
-                    {% for key,value in correctedTable.items %}
-                        {% ifequal file key %}
-                            {% if value.1 %} 
-                                <table cellspacing="0" cellpadding="10px">
-                                    <tbody>
-                                        {% for row in value.0 %}
-                                            <tr class="{% cycle '' 'altrow' as alt %}">
-                                                {% if forloop.first %}
-                                                    {% for header in  value.1 %}
-                                                        <th>{{ header }}</th>
-                                                    {% endfor %}
-                                                    <th>Sample Distribution</th>
-                                                    <th>Subtype Distribution</th>
-                                                </tr>
-                                                <tr class="{% cycle alt  %}">
-                                                {% endif %}
+    <ul class="nav nav-tabs" id="myTab">
+        <li{% if request.path == corrected %} %} class="active"{% endif %}><a href="{% url 'corrected' id file %}">Corrected</a></li>
+        <li{% if request.path == resolved %} class="active"{% endif %}><a href="{% url 'resolved' id file %}">Resolved</a></li>
+    </ul>
 
-                                                {% for header in value.1 %}
-                                                    <td> {{ row| dictvalue:header }}  </td>
-                                                {% endfor %}
-                                                <td><div id="corrected_breakdown_{{ forloop.counter }}">breakdown</div></td>
-                                                <td><div id="corrected_subtypes_{{ forloop.counter }}">subtypes</div></td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            {% else %}
-                                <p>No Data Available</p>
-                            {% endif %}
-                        {% endifequal %}
+    <div class="tab-content">
+        <div class="tab-pane fade in active">
+            <!--<h3><a href="#">Corrected</a></h3>-->
+            {% if counts %} 
+            <table class="table-bordered table-condensed table-striped cf"> 
+                <thead>
+                    <tr class="{% cycle '' 'altrow' as alt %}">
+                        {% for header in  headers %}
+                        <th>{{ header }}</th>
+                        {% endfor %}
+                        <th>Sample Distribution</th>
+                        <th>Subtype Distribution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in counts %}
+                    <tr class="{% cycle alt  %}">
+
+                        {% for header in headers %}
+                        <td> {{ row| dictvalue:header }}  </td>
+                        {% endfor %}
+                        <td><div class="thumbnail" id="breakdown_{{ forloop.counter }}"></div></td>
+                        <td><div class="thumbnail" id="subtypes_{{ forloop.counter }}"></div></td>
+                    </tr>
                     {% endfor %}
-
-
-                    <div style="text-align:left;padding-top:10px; padding-bottom:5px;font-weight:bold; border-width:1px;border-bottom-style:solid;font-size:1.2em;background-color:#FFFFFF;"><a href="#">Resolved</a></div>
-                    {% for key,value in resolvedTable.items %}
-                        {% ifequal file key %}
-                            {% if value.1 %} 
-                                <table cellspacing="0" cellpadding="10px">
-                                    <tbody>
-                                        {% for row in value.0 %}
-                                            <tr class="{% cycle '' 'altrow' as alt %}">
-                                                {% if forloop.first %}
-                                                    {% for header in  value.1 %}
-                                                        <th>{{ header }}</th>
-                                                    {% endfor %}
-                                                    <th>Sample Distribution</th>
-                                                    <th>Subtype Distribution</th>
-                                                </tr>
-                                                <tr class="{% cycle alt  %}">
-                                                {% endif %}
-
-                                                {% for header in value.1 %}
-                                                    <td> {{ row| dictvalue:header }}  </td>
-                                                {% endfor %}
-                                                <td><div id="resolved_breakdown_{{ forloop.counter }}">breakdown</div></td>
-                                                <td><div id="resolved_subtypes_{{ forloop.counter }}">subtypes</div></td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            {% else %}
-                                <p>No Data Available</p>
-                            {% endif %}
-                        {% endifequal %}
-                    {% endfor %}
-
-                </div>
-            {% endfor %}
-
+                </tbody>
+            </table>
+            {% else %}
+            <p>No Data Available</p>
+            {% endif %}
         </div>
 
 
-        <script type="text/javascript">
-            $(function() {
-                $('#multiAccordion').multiAccordion({
-                        active: [
-                            {% for file in files %}
-                            {% for key,value in correctedTable.items %}
-                            {% ifequal file key  %}
-                            {% if value.1 %}
-                            {{ forloop.parentloop.counter0 }}
+   </div>
+</div>
 
-                            {% else %}
-                            {% for key2,value2 in resolvedTable.items %}
-                            {% ifequal file key2  %}
-                            {% if value2.1 %}
-                            {{ forloop.parentloop.parentloop.counter0 }}
-                            {% endif %}
-                            {% endifequal %}
-                            {% endfor %}
 
-                            {% endif %}
-                            {% endifequal %}
-                            {% endfor %}
-                            {% endfor %}
-                ]
-                });
-                $('#multiAccordion').multiAccordion("option", "active", [
-                        {% for file in files %}
-                        {% for key,value in correctedTable.items %}
-                        {% ifequal file key  %}
-                        {% if value.1 %}
-                        {{ forloop.parentloop.counter0 }}
 
-                        {% else %}
-                        {% for key2,value2 in resolvedTable.items %}
-                        {% ifequal file key2  %}
-                        {% if value2.1 %}
-                        {{ forloop.parentloop.parentloop.counter0 }}
-                        {% endif %}
-                        {% endifequal %}
-                        {% endfor %}
 
-                        {% endif %}
-                        {% endifequal %}
-                        {% endfor %}                   
-                        {% endfor %}
-                ]);
-            });
-        </script>
+<script type="text/javascript">
 
-    </div>
+    // Load the Visualization API and the piechart package.
+google.load('visualization', '1.0', {'packages':['corechart'],"callback":drawCharts});
+
+// Set a callback to run when the Google Visualization API is loaded.
+//google.setOnLoadCallback(drawCharts);
+
+function drawCharts() {
+    {% for row in breakdown %}
+    drawChart_breakdown_{{ forloop.counter }}();
+    {% endfor %}
+
+    {% for row in subtypes %}
+    drawChart_subtypes_{{ forloop.counter }}();
+    {% endfor %}
+
+}
+
+{% for row in breakdown %}
+function drawChart_breakdown_{{ forloop.counter }}() {
+
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'clade'); 
+    data.addColumn('number', 'amount'); 
+    data.addRows([
+            {% for key, value in row.items %} 
+            ['{{ key }}',{{ value }}],
+            {% endfor %}
+            ]);
+
+    // Set chart options
+    var options = {
+        'backgroundColor': 'transparent',
+        'width':400,
+        'height':300};
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.PieChart(document.getElementById('breakdown_{{ forloop.counter }}'));
+    chart.draw(data, options);
+}
+{% endfor %}
+
+
+
+{% for row in subtypes %}
+function drawChart_subtypes_{{ forloop.counter }}() {
+
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'clade'); 
+    data.addColumn('number', 'amount'); 
+    data.addRows([
+            {% for key, value in row.items %} 
+            ['{{ key }}',{{ value }}],
+            {% endfor %}
+            ]);
+
+    // Set chart options
+    var options = {
+        'backgroundColor': 'transparent',
+        'width':400,
+        'height':300};
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.PieChart(document.getElementById('subtypes_{{ forloop.counter }}'));
+    chart.draw(data, options);
+}
+{% endfor %}
+
+</script>
+
+
+{% endblock %}

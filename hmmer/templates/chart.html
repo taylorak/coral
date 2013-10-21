@@ -1,6 +1,7 @@
+{% extends "base.html" %}
 {% load custom_filters %}
 
-
+{% block body %}
 <div id="chart_div_{{ site }}"></div>
 
 <script type="text/javascript">
@@ -34,4 +35,4 @@ function drawChart() {
     chart.draw(data, options);
 }
 </script>
-
+{% endblock %}

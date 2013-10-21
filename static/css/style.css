@@ -1,7 +1,42 @@
 body {
-    padding-top: 70px;
+    padding-top: 20px;
     padding-bottom: 70px;
+    min-height: 1000px;
 }
+
+.header {
+    background: url('../img/coral.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 200px;
+}
+
+.navbar {
+    border-radius: 0px;
+}
+
+.navbar-inverse .navbar-inner {
+    background-color: #1B1B1B;
+    background-image: linear-gradient(to bottom, #222222, #111111);
+    background-repeat: repeat-x;
+    border-color: #252525;
+}
+/*.navbar {*/
+/*border-radius: 0px;    */
+/*}*/
+
+.navbar-inverse .divider-vertical {
+    border-left-color: #111111;
+    border-right-color: #222222;
+}
+
+.navbar .divider-vertical {
+    border-left: 1px solid #111111;
+    border-right: 1px solid #222222;
+    height: 50px;
+    margin: 0 9px;
+}
+
 
 .btn-file {
     position: relative;
@@ -28,7 +63,7 @@ body {
     #flip-scroll * html .cf { zoom: 1; }
     #flip-scroll *:first-child+html .cf { zoom: 1; }
     #flip-scroll table { width: 100%; border-collapse: collapse; border-spacing: 0; }
-     
+
     #flip-scroll th,
     #flip-scroll td { margin: 0; vertical-align: top; }
     #flip-scroll th { text-align: left; }
@@ -39,10 +74,10 @@ body {
     #flip-scroll th { display: block; text-align: right; }
     #flip-scroll tbody tr { display: inline-block; vertical-align: top; }
     #flip-scroll td { display: block; min-height: 1.25em; text-align: left; }
-     
-     
+
+
     /* sort out borders */
-     
+
     #flip-scroll th { border-bottom: 0; border-left: 0; }
     #flip-scroll td { border-left: 0; border-right: 0; border-bottom: 0; }
     #flip-scroll tbody tr { border-left: 1px solid #babcbf; }
@@ -55,9 +90,9 @@ body {
 }
 
 table {
-    max-width: 100%;
+    width: 100%;
 }
 
-td,th {
-    text-align: right;
-}
+/*td,th {*/
+/*text-align: right;*/
+/*}*/

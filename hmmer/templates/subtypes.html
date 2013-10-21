@@ -2,97 +2,36 @@
 {% load custom_filters %}
 
 {% block body %}
-<!--<div class="download">-->
-    <!--<a href="{% url "dlSubtypes" id %}">-->
-        <!--<img alt="" title="Download List" src="{{ STATIC_URL }}img/download-large.png"> -->
-    <!--</a>-->
-<!--</div>-->
+
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <a href="{% url "dlSubtypes" id %}">
-                <img alt="" title="Download List" src="{{ STATIC_URL }}img/download-large.png"> 
-            </a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            {% if shortnew_counts %}
+    <div class="col-sm-12">
+        <h2><a href="#" %}">{{ title }}</a></h2>
+        {% if counts %}
 
-            <div style="text-align:left;padding-top:10px; padding-bottom:5px;font-weight:bold;font-size:1.2em;background-color:#FFFFFF;"><a href="{% url "dlShortnew" id  %}">Short New Subtypes</a></div>
-            <div id="flip-scroll">
-                <table class="table-bordered table-striped table-condensed cf">
-                    {% for row in shortnew_counts %}
-                    {% if forloop.first %}
-                    <thead>
-                        <tr>
-                            {% for header in shortnew_headers %}
-                            <th>{{ header }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr class="{% cycle '' 'altrow' as alt  %}">
-                            {% endif %}
-                            {% for header in shortnew_headers %}
-                            <td> {{ row | dictvalue:header }}</td>
-                            {% endfor %}
-                        </tr>
+        <div id="flip-scroll">
+            <table class="table-bordered table-striped table-condensed cf">
+                <thead>
+                    <tr>
+                        {% for header in headers %}
+                        <th>{{ header }}</th>
                         {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                    </tr>
+                </thead>
 
-            {% endif %}
-
+                <tbody>
+                    {% for row in counts %}
+                    <tr class="{% cycle '' 'altrow' as alt  %}">
+                        {% for header in headers %}
+                        <td> {{ row | dictvalue:header }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-    </div>
-    {% if unique_counts %}
-
-    <div style="text-align:left;padding-top:10px; padding-bottom:5px;font-weight:bold; border-width:1px;border-bottom-style:solid;font-size:1.2em;background-color:#FFFFFF;"><a href="{% url "dlUnique" id %}">Unique Subtypes</a></div>
-    <table class="table table-condensed table-striped">
-        <tbody>
-            {% for row in unique_counts %}
-            <tr class="{% cycle '' 'altrow' as alt %}">
-                {% if forloop.first %}
-                {% for header in unique_headers %}
-                <th>{{ header }}</th>
-                {% endfor %}
-                </tr><tr class="{% cycle alt  %}">
-                {% endif %}
-                {% for header in unique_headers %}
-                <td> {{ row | dictvalue:header }}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% endif %}
-
-    {% if perfect_counts %}
-
-    <div style="text-align:left;padding-top:10px; padding-bottom:5px;font-weight:bold; border-width:1px;border-bottom-style:solid;font-size:1.2em;background-color:#FFFFFF;"><a href="{% url "dlPerfect" id %}">Perfect Subtype</a>s</div>
-    <table class="table table-condensed table-striped">
-        <tbody>
-            {% for row in perfect_counts %}
-            <tr class="{% cycle '' 'altrow' as alt %}">
-                {% if forloop.first %}
-                {% for header in perfect_headers %}
-                <th>{{ header }}</th>
-                {% endfor %}
-                </tr><tr class="{% cycle alt  %}">
-                {% endif %}
-                {% for header in perfect_headers %}
-                <td> {{ row | dictvalue:header }}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    {% endif %}
-</div>
+        {% else %}
+        <p>No Data Available</p>
+        {% endif %}
     </div>
 </div>
 

@@ -1,79 +1,35 @@
+{% extends "base.html" %}
 {% load custom_filters %}
 
-<div class="download">
-    <a href="{% url "dlTree" id %}">
-        <img alt="" title="Download List" src="{{ STATIC_URL }}img/download-large.png"> 
-    </a>
-</div>
+{% block body %}
+<div class="container">
 
-<div id="tab_container">
-
-    <div id="multiAccordion2">
-        {% for file in files %}
-
-        <h3><a href="#">{{ file }}</a></h3>
-        <div>
-            {% for key,value in tables.items %}
-            {% ifequal file key %}
-            {% if value.1 %} 
-            <table cellspacing="0" cellpadding="10px">
-                <tbody>
-                    {% for row in value.0 %}
-                    <tr class="{% cycle '' 'altrow' as alt %}">
-                        {% if forloop.first %}
-                        {% for header in  value.1 %}
-                        <th>{{ header }}</th>
-                        {% endfor %}
-                        </tr><tr class="{% cycle alt  %}">
-                        {% endif %}
-
-                        {% for header in value.1 %}
-                        <td> {{ row| dictvalue:header }}  </td>
-                        {% endfor %}
-
-                    </tr>
+    <h2><a href="#">Trees-{{ file }}</a></h2>
+    <div>
+        {% if counts %} 
+        <table class="table-bordered table-condensed table-striped cf"> 
+            <thead>
+                <tr class="{% cycle '' 'altrow' as alt %}">
+                    {% for header in  headers %}
+                    <th>{{ header }}</th>
                     {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <p>No Data Available</p>
-            {% endif %}
-            {% endifequal %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in counts %}
+                <tr class="{% cycle alt  %}">
+                    {% for header in headers %}
+                    <td> {{ row| dictvalue:header }}  </td>
+                    {% endfor %}
 
-            {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No Data Available</p>
+        {% endif %}
 
-        </div>
-        {% endfor %}
-
-           </div>
-
-
-           <script type="text/javascript">
-               $(function() {
-                   $('#multiAccordion2').multiAccordion({
-                           active: [
-                               {% for file in files %}
-                               {% for key,value in tables.items %}
-                               {% ifequal file key %}
-                               {% if value.1 %} 
-                               {{ forloop.parentloop.counter0 }}, 
-                               {% endif %}
-                               {% endifequal %}
-                               {% endfor %}
-                               {% endfor %}]
-                   });
-                   $('#multiAccordion2').multiAccordion("option", "active", [
-                           {% for file in files %}
-                           {% for key,value in tables.items %}
-                           {% ifequal file key %}
-                           {% if value.1 %} 
-                           {{  forloop.parentloop.counter0 }},
-                           {% endif %}
-                           {% endifequal %}
-                           {% endfor %}
-                           {% endfor %}
-                   ]);
-               });
-           </script>
-
-       </div>
+    </div>
+</div>
+{% endblock %}
