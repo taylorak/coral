@@ -1,3 +1,5 @@
+![screenshot](https://raw.github.com/taylorak/coral/bootstrap/static/img/File_Form.png)
+![screenshot](https://raw.github.com/taylorak/coral/bootstrap/static/img/Clades.png)
 #SymTyper Webpage#
 Bioinformatics Web Portal
 ##Overview
