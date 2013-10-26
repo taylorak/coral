@@ -42,8 +42,8 @@
                         {% for header in headers %}
                         <td> {{ row| dictvalue:header }}  </td>
                         {% endfor %}
-                        <td><div class="thumbnail" id="breakdown_{{ forloop.counter }}"></div></td>
-                        <td><div class="thumbnail" id="subtypes_{{ forloop.counter }}"></div></td>
+                        <td><div style="width: 400px; height: 300px;" class="thumbnail" id="breakdown_{{ forloop.counter }}"></div></td>
+                        <td><div style="width: 400px; height: 300px;" class="thumbnail" id="subtypes_{{ forloop.counter }}"></div></td>
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -172,6 +172,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
 )
 
 SYMTYPER_HOME = os.path.join(PROJECT_ROOT, "hmmer/files")
+SYMTYPER_IMG = os.path.join(PROJECT_ROOT, "static", "img")
 
 import djcelery
 djcelery.setup_loader()
