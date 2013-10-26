@@ -19,7 +19,7 @@ import time
 
 def errorPage(request):
     # fix me with the correct page to display
-    return render_to_response('upload.html', RequestContext(request, {'form': form}))
+    return render_to_response('upload.html', RequestContext(request))
 
 
 def inputFormDisplay(request, template='upload.html'):
@@ -43,7 +43,8 @@ def inputFormDisplay(request, template='upload.html'):
 
             task = handleForm.delay(os.path.join("data", "input.fasta"),
                                     os.path.join("data", "samples.ids"),
-                                    parentDir)
+                                    sym_task.UID)
+                                    #parentDir)
 
             sym_task.celeryUID = task.id
             sym_task.save()

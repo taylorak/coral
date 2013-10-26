@@ -171,7 +171,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
 )
 
-SYMTYPER_HOME = os.path.join(PROJECT_ROOT, "hmmer/files")
+SYMTYPER_HOME = os.path.join(PROJECT_ROOT, "hmmer", "files")
 SYMTYPER_IMG = os.path.join(PROJECT_ROOT, "static", "img")
 
 import djcelery
