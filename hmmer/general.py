@@ -86,7 +86,7 @@ def treeCsv(csvPath):
             counts = []
             all = [line.strip().split() for line in tsv]
             headers = all[0]
-            headers.insert(0, 'sample')
+            headers.insert(0, 'node')
 
             if len(headers) > 1:
                 for row in all[1:]:
