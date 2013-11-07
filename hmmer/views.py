@@ -232,6 +232,16 @@ def multiplesCorrected(request, id, file):
     ready, redirect = taskReady(sym_task.celeryUID)
     if ready:
         corrected_counts, corrected_headers, corrected_breakdown, corrected_subtypes = multiplesCsv(os.path.join(corrected, file))
+
+        #paginator = Paginator(corrected_counts, 10)
+        #page = request.GET.get('page')
+        #try:
+            #counts = paginator.page(page)
+        #except PageNotAnInteger:
+            #counts = paginator.page(1)
+        #except EmptyPage:
+            #counts = paginator.page(paginator.num_pages)
+
     elif redirect:
         return redirect
     else:
@@ -239,6 +249,7 @@ def multiplesCorrected(request, id, file):
 
     context = {
         'counts': corrected_counts,
+        #'counts': counts,
         'headers': corrected_headers,
         'breakdown': corrected_breakdown,
         'subtypes': corrected_subtypes,
