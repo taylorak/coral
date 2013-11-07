@@ -20,7 +20,8 @@
                             {% for header in all_headers %}
                             <th>{{header}}</th> 
                             {% endfor %}
-                            <th><a href="{% url "dlDetailed" id %}">Detailed Count</a></th>
+                            <!--<th><a href="{% url "dlDetailed" id %}">Detailed Count</a></th>-->
+                            <th>Detailed Count</th>
                         </tr>
                     </thead>
 
@@ -36,7 +37,7 @@
                             {% endif %}
                             {% endfor %}
                             <td>
-                                <a class="btn btn-default" data-toggle="modal" href="#lightbox{{ forloop.counter }}">View Chart</a>
+                                <a class="btn btn-default" style="width: 100%;" data-toggle="modal" href="#lightbox{{ forloop.counter }}">View Chart</a>
                             </td>
                         </tr>
                         {% endfor %}

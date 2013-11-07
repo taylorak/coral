@@ -1,18 +1,58 @@
 body {
-    padding-top: 20px;
     padding-bottom: 70px;
+    font-family: 'Roboto', serif;
 }
+
+h1, h2, h3 {
+    font-family: 'Roboto Slab', serif;
+}
+
+/*#header {*/
+    /*padding-bottom: 10px;*/
+/*}*/
 
 .header {
     background: url('../img/coral.jpg');
     background-size: cover;
     background-position: center;
+    opacity: 0.5;
     height: 200px;
 }
 
 .navbar {
     border-radius: 0px;
+    font-size: 15px;
 }
+
+/** color navbar links white **/
+/*.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {*/
+        /*background-color: rgba(0, 0, 0, 0);*/
+        /*color: #999999;*/
+/*}*/
+
+/*.navbar-inverse .navbar-brand {*/
+        /*color: #FFFFFF;*/
+/*}*/
+
+/*.navbar-inverse li a:hover, .navbar-inverse .navbar-nav li a:focus {*/
+        /*background-color: rgba(0, 0, 0, 0);*/
+        /*color: #999999;*/
+/*}*/
+
+/*.navbar-inverse li a {*/
+        /*color: #FFFFFF;*/
+/*}*/
+
+/*.navbar-inverse .navbar-nav .dropdown-menu li a {*/
+        /*color: #FFFFFF;*/
+/*}*/
+
+/*.navbar-inverse .navbar-nav li a:hover, .navbar-inverse .navbar-nav li a:focus {*/
+        /*background-color: rgba(0, 0, 0, 0);*/
+        /*color: #999999;*/
+/*}*/
+
+
 
 .navbar-inverse .navbar-inner {
     background-color: #1B1B1B;
@@ -24,38 +64,38 @@ body {
 /*border-radius: 0px;    */
 /*}*/
 
-.navbar-inverse .divider-vertical {
-    border-left-color: #111111;
-    border-right-color: #222222;
-}
+/*.navbar-inverse .divider-vertical {*/
+    /*border-left-color: #111111;*/
+    /*border-right-color: #222222;*/
+/*}*/
 
-.navbar .divider-vertical {
-    border-left: 1px solid #111111;
-    border-right: 1px solid #222222;
-    height: 50px;
-    margin: 0 9px;
-}
+/*.navbar .divider-vertical {*/
+    /*border-left: 1px solid #111111;*/
+    /*border-right: 1px solid #222222;*/
+    /*height: 50px;*/
+    /*margin: 0 9px;*/
+/*}*/
 
 
-.btn-file {
-    position: relative;
-    overflow: hidden;
-}
+/*.btn-file {*/
+    /*position: relative;*/
+    /*overflow: hidden;*/
+/*}*/
 
-.btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 999px;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    background: red;
-    cursor: inherit;
-    display: block;
-}
+/*.btn-file input[type=file] {*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*right: 0;*/
+    /*min-width: 100%;*/
+    /*min-height: 100%;*/
+    /*font-size: 999px;*/
+    /*text-align: right;*/
+    /*filter: alpha(opacity=0);*/
+    /*opacity: 0;*/
+    /*background: red;*/
+    /*cursor: inherit;*/
+    /*display: block;*/
+/*}*/
 
 @media only screen and (max-width: 800px) {
     #flip-scroll .cf:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }

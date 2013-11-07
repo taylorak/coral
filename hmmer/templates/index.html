@@ -12,13 +12,6 @@
 <div class="container">
     <div class="row">
         {% if done %}
-        <div class="col-md-9">
-            <div class="well">
-                <h2>Under Construction</h2>
-                <p>Summary goes here</p>
-                <p>Only the download link on this page works right now</p>
-            </div>
-        </div>
         <div class="col-md-3">
             <div class="well">
                 <ul class="nav sidebar">
@@ -26,6 +19,14 @@
                     <li><a href="#">Contact</a></li>
                     <li><a href="{% url 'dlEverything' id %}">Download</a></li>
                 </ul>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="well">
+                <h2>Under Construction</h2>
+                <p>Summary goes here</p>
+                <p>Only the download link on this page works right now</p>
             </div>
         </div>
         {% else %}

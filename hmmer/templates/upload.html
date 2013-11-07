@@ -8,6 +8,72 @@
 {% block body %}
 <div class="container">
     <div class="row">
+        <div class="col-md-4">
+            <div class="well">
+                <div class="col-md-12">
+                    <form role="form" enctype="multipart/form-data" method="post" action=".">
+
+                        <div class="form-group{% if form.fasta_File.errors %} has-error{% endif %}">
+                            <label for="id_fasta_File">Fasta File:</label>
+
+                            <!--<div class="input-group">-->
+                                <!--<span class="input-group-btn">-->
+                                    <!--<span class="btn btn-primary btn-file">-->
+                                        <!--Browse...-->
+                                        <!--{{ form.fasta_File }}-->
+                                    <!--</span>-->
+                                <!--</span>-->
+                                <!--<input class="form-control" type="text" readonly="">-->
+                            <!--</div>-->
+                            {{ form.fasta_File }}
+                            <!--<p class="help-block">Fasta File Goes Here.</p>-->
+
+                            {% if form.fasta_File.errors %}
+                            <span class="help-block">
+                                <ol>
+                                    {% for error in form.fasta_File.errors %}
+                                    <li><strong> {{ error|escape }} </strong></li>
+                                    {% endfor %}
+                                </ol>
+                            </span>
+                            {% endif %}
+                        </div>
+
+
+                        <div class="form-group{% if form.sample_File.errors %} has-error{% endif %}">
+                            <label for="id_sample_File">Id File:</label>
+
+                            <!--<div class="input-group">-->
+                                <!--<span class="input-group-btn">-->
+                                    <!--<span class="btn btn-primary btn-file"> -->
+                                        <!--Browse...-->
+                                        <!--{{ form.sample_File }}-->
+                                    <!--</span>-->
+                                <!--</span>-->
+                                <!--<input class="form-control" type="text" readonly="">-->
+                            <!--</div>-->
+                            {{ form.sample_File }}
+                            <!--<p class="help-block">Id File Goes Here.</p>-->
+
+                            {% if form.sample_File.errors %}
+                            <span class="help-block">
+                                <ol>
+                                    {% for error in form.sample_File.errors %}
+                                    <li><strong> {{ error|escape }} </strong></li>
+                                    {% endfor %}
+                                </ol>
+                            </span>
+                            {% endif %}
+
+                        </div>
+
+                        <button class="btn btn-default" type="submit">Submit</button>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+ 
         <div class="col-md-8">
             <div class="well">
                 <h2>Under Construction</h2>
@@ -40,90 +106,29 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="well">
-                <div class="col-md-12">
-                    <form role="form" enctype="multipart/form-data" method="post" action=".">
-
-                        <div class="form-group{% if form.fasta_File.errors %} has-error{% endif %}">
-                            <label for="id_fasta_File">Fasta File:</label>
-
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <span class="btn btn-primary btn-file">
-                                        Browse...
-                                        {{ form.fasta_File }}
-                                    </span>
-                                </span>
-                                <input class="form-control" type="text" readonly="">
-                            </div>
-
-                            {% if form.fasta_File.errors %}
-                            <span class="help-block">
-                                <ol>
-                                    {% for error in form.fasta_File.errors %}
-                                    <li><strong> {{ error|escape }} </strong></li>
-                                    {% endfor %}
-                                </ol>
-                            </span>
-                            {% endif %}
-                        </div>
-
-
-                        <div class="form-group{% if form.sample_File.errors %} has-error{% endif %}">
-                            <label for="id_sample_File">Id File:</label>
-
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <span class="btn btn-primary btn-file"> 
-                                        Browse...
-                                        {{ form.sample_File }}
-                                    </span>
-                                </span>
-                                <input class="form-control" type="text" readonly="">
-                            </div>
-
-                            {% if form.sample_File.errors %}
-                            <span class="help-block">
-                                <ol>
-                                    {% for error in form.sample_File.errors %}
-                                    <li><strong> {{ error|escape }} </strong></li>
-                                    {% endfor %}
-                                </ol>
-                            </span>
-                            {% endif %}
-
-                        </div>
-
-                        <button class="btn btn-primary" type="submit">Submit</button>
-                        {% csrf_token %}
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+   </div>
 </div>
 
-<script type="text/javascript">
-    $(document)
-    .on('change', '.btn-file :file', function() {
-            var input = $(this),
-            numFiles = input.get(0).files ? input.get(0).files.length : 1,
-            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-            input.trigger('fileselect', [numFiles, label]);
-            });
-$(document).ready( function() {
-        $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
-            var input = $(this).parents('.input-group').find(':text'),
-            log = numFiles > 1 ? numFiles + ' files selected' : label;
-            if( input.length ) {
-            input.val(log);
-            } else {
-            if( log ) alert(log);
-            }
-            });
-        }); 
-</script>
+<!--<script type="text/javascript">-->
+    <!--$(document)-->
+    <!--.on('change', '.btn-file :file', function() {-->
+            <!--var input = $(this),-->
+            <!--numFiles = input.get(0).files ? input.get(0).files.length : 1,-->
+            <!--label = input.val().replace(/\\/g, '/').replace(/.*\//, '');-->
+            <!--input.trigger('fileselect', [numFiles, label]);-->
+            <!--});-->
+<!--$(document).ready( function() {-->
+        <!--$('.btn-file :file').on('fileselect', function(event, numFiles, label) {-->
+            <!--var input = $(this).parents('.input-group').find(':text'),-->
+            <!--log = numFiles > 1 ? numFiles + ' files selected' : label;-->
+            <!--if( input.length ) {-->
+            <!--input.val(log);-->
+            <!--} else {-->
+            <!--if( log ) alert(log);-->
+            <!--}-->
+            <!--});-->
+        <!--}); -->
+<!--</script>-->
 
 {% endblock %}
 
