@@ -166,7 +166,6 @@ def multiplesCsv(csvPath):
                         dic[info[0]] = int(info[1])
                     subtypes.append(dic)
 
-            print breakdown
             return table, header, breakdown, subtypes
     except:
         pass
