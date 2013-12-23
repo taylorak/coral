@@ -5,14 +5,12 @@ body {
 
 h1, h2, h3 {
     font-family: 'Roboto Slab', serif;
+    margin-bottom: 10px;
+    margin-top:10px;
 }
 
-/*#header {*/
-    /*padding-bottom: 10px;*/
-/*}*/
-
 .header {
-    background: url('../img/coral.jpg');
+    background: url('../img/BI_Reef.jpg');
     background-size: cover;
     background-position: center;
     opacity: 0.5;
@@ -24,35 +22,10 @@ h1, h2, h3 {
     font-size: 15px;
 }
 
-/** color navbar links white **/
-/*.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {*/
-        /*background-color: rgba(0, 0, 0, 0);*/
-        /*color: #999999;*/
-/*}*/
-
-/*.navbar-inverse .navbar-brand {*/
-        /*color: #FFFFFF;*/
-/*}*/
-
-/*.navbar-inverse li a:hover, .navbar-inverse .navbar-nav li a:focus {*/
-        /*background-color: rgba(0, 0, 0, 0);*/
-        /*color: #999999;*/
-/*}*/
-
-/*.navbar-inverse li a {*/
-        /*color: #FFFFFF;*/
-/*}*/
-
-/*.navbar-inverse .navbar-nav .dropdown-menu li a {*/
-        /*color: #FFFFFF;*/
-/*}*/
-
-/*.navbar-inverse .navbar-nav li a:hover, .navbar-inverse .navbar-nav li a:focus {*/
-        /*background-color: rgba(0, 0, 0, 0);*/
-        /*color: #999999;*/
-/*}*/
-
-
+.btn-group {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
 
 .navbar-inverse .navbar-inner {
     background-color: #1B1B1B;
@@ -60,78 +33,12 @@ h1, h2, h3 {
     background-repeat: repeat-x;
     border-color: #252525;
 }
-/*.navbar {*/
-/*border-radius: 0px;    */
-/*}*/
 
-/*.navbar-inverse .divider-vertical {*/
-    /*border-left-color: #111111;*/
-    /*border-right-color: #222222;*/
-/*}*/
-
-/*.navbar .divider-vertical {*/
-    /*border-left: 1px solid #111111;*/
-    /*border-right: 1px solid #222222;*/
-    /*height: 50px;*/
-    /*margin: 0 9px;*/
-/*}*/
-
-
-/*.btn-file {*/
-    /*position: relative;*/
-    /*overflow: hidden;*/
-/*}*/
-
-/*.btn-file input[type=file] {*/
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*right: 0;*/
-    /*min-width: 100%;*/
-    /*min-height: 100%;*/
-    /*font-size: 999px;*/
-    /*text-align: right;*/
-    /*filter: alpha(opacity=0);*/
-    /*opacity: 0;*/
-    /*background: red;*/
-    /*cursor: inherit;*/
-    /*display: block;*/
-/*}*/
-
-@media only screen and (max-width: 800px) {
-    #flip-scroll .cf:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
-    #flip-scroll * html .cf { zoom: 1; }
-    #flip-scroll *:first-child+html .cf { zoom: 1; }
-    #flip-scroll table { width: 100%; border-collapse: collapse; border-spacing: 0; }
-
-    #flip-scroll th,
-    #flip-scroll td { margin: 0; vertical-align: top; }
-    #flip-scroll th { text-align: left; }
-    #flip-scroll table { display: block; position: relative; width: 100%; }
-    #flip-scroll thead { display: block; float: left; }
-    #flip-scroll tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
-    #flip-scroll thead tr { display: block; }
-    #flip-scroll th { display: block; text-align: right; }
-    #flip-scroll tbody tr { display: inline-block; vertical-align: top; }
-    #flip-scroll td { display: block; min-height: 1.25em; text-align: left; }
-
-
-    /* sort out borders */
-
-    #flip-scroll th { border-bottom: 0; border-left: 0; }
-    #flip-scroll td { border-left: 0; border-right: 0; border-bottom: 0; }
-    #flip-scroll tbody tr { border-left: 1px solid #babcbf; }
-    #flip-scroll th:last-child,
-    #flip-scroll td:last-child { border-bottom: 1px solid #babcbf; }
-}
-
-#flip-scroll {
+.table-responsive {
+    max-height: 500px;
     overflow: auto;
 }
 
 table {
     width: 100%;
 }
-
-/*td,th {*/
-/*text-align: right;*/
-/*}*/

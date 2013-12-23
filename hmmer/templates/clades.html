@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load custom_filters %}
+{% load pagination %}
 
 {% block head %}
 <title>Clades</title>
@@ -8,11 +9,32 @@
 {% block body %}
 
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12">
 
-            <h2><a href="#">{{ title }}</a></h2>
-            <div id="flip-scroll">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h2><a href="{% url "dlClades" id %}">{{ title }}</a></h2>
+                </div>
+
+                <div class="col-sm-4">
+                    <!-- Split button -->
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-primary">Downloads</button>
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
                 <table class="table-bordered table-condensed table-striped cf"> 
 
                     <thead>
@@ -46,6 +68,7 @@
                 </table>
             </div>
 
+            {% if is_paginated %}{% pagination all_counts %}{% endif %}
 
             <!-- Button trigger modal -->
             <!--<a data-toggle="modal" href="#lightbox1" class="btn btn-primary btn-lg">Launch demo modal</a>-->
@@ -61,10 +84,6 @@
             </div>
             {% endfor %}
 
-
-
-        </div>
-    </div>
 </div>
 
 <!--[> Modal <]-->

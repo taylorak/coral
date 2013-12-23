@@ -14,17 +14,18 @@
                     <form role="form" enctype="multipart/form-data" method="post" action=".">
 
                         <div class="form-group{% if form.fasta_File.errors %} has-error{% endif %}">
-                            <label for="id_fasta_File">Fasta File:</label>
+                            <label for="id_fasta_File">Fasta File </label>
+                            <!--<span class="glyphicon glyphicon-info-sign pull-right"></span>-->
 
                             <!--<div class="input-group">-->
                                 <!--<span class="input-group-btn">-->
                                     <!--<span class="btn btn-primary btn-file">-->
                                         <!--Browse...-->
                                         <!--{{ form.fasta_File }}-->
+                                        <!--</span>-->
                                     <!--</span>-->
-                                <!--</span>-->
                                 <!--<input class="form-control" type="text" readonly="">-->
-                            <!--</div>-->
+                                <!--</div>-->
                             {{ form.fasta_File }}
                             <!--<p class="help-block">Fasta File Goes Here.</p>-->
 
@@ -39,19 +40,19 @@
                             {% endif %}
                         </div>
 
-
                         <div class="form-group{% if form.sample_File.errors %} has-error{% endif %}">
-                            <label for="id_sample_File">Id File:</label>
+                            <label for="id_sample_File">Id File </label>
+                            <!--<span class="glyphicon glyphicon-info-sign"></span>-->
 
                             <!--<div class="input-group">-->
                                 <!--<span class="input-group-btn">-->
                                     <!--<span class="btn btn-primary btn-file"> -->
                                         <!--Browse...-->
                                         <!--{{ form.sample_File }}-->
+                                        <!--</span>-->
                                     <!--</span>-->
-                                <!--</span>-->
                                 <!--<input class="form-control" type="text" readonly="">-->
-                            <!--</div>-->
+                                <!--</div>-->
                             {{ form.sample_File }}
                             <!--<p class="help-block">Id File Goes Here.</p>-->
 
@@ -67,13 +68,27 @@
 
                         </div>
 
+                        <div class="form-group">
+                            <label for="similarity">Similarity</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="similarity" placeholder="Enter Similarity" disabled>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="disabledInput">Eval</label>
+                            <input type="text" class="form-control" id="disabledInput" placeholder="Enter Eval" disabled>
+                        </div>
+
+
                         <button class="btn btn-default" type="submit">Submit</button>
                         {% csrf_token %}
                     </form>
                 </div>
             </div>
         </div>
- 
+
         <div class="col-md-8">
             <div class="well">
                 <h2>Under Construction</h2>
@@ -106,7 +121,7 @@
             </div>
         </div>
 
-   </div>
+    </div>
 </div>
 
 <!--<script type="text/javascript">-->
@@ -117,18 +132,18 @@
             <!--label = input.val().replace(/\\/g, '/').replace(/.*\//, '');-->
             <!--input.trigger('fileselect', [numFiles, label]);-->
             <!--});-->
-<!--$(document).ready( function() {-->
-        <!--$('.btn-file :file').on('fileselect', function(event, numFiles, label) {-->
-            <!--var input = $(this).parents('.input-group').find(':text'),-->
-            <!--log = numFiles > 1 ? numFiles + ' files selected' : label;-->
-            <!--if( input.length ) {-->
-            <!--input.val(log);-->
-            <!--} else {-->
-            <!--if( log ) alert(log);-->
-            <!--}-->
-            <!--});-->
-        <!--}); -->
-<!--</script>-->
+    <!--$(document).ready( function() {-->
+            <!--$('.btn-file :file').on('fileselect', function(event, numFiles, label) {-->
+                <!--var input = $(this).parents('.input-group').find(':text'),-->
+                <!--log = numFiles > 1 ? numFiles + ' files selected' : label;-->
+                <!--if( input.length ) {-->
+                <!--input.val(log);-->
+                <!--} else {-->
+                <!--if( log ) alert(log);-->
+                <!--}-->
+                <!--});-->
+            <!--}); -->
+    <!--</script>-->
 
 {% endblock %}
 

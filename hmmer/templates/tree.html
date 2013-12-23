@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load custom_filters %}
+{% load pagination %}
 
 {% block head %}
 <title>Tree</title>
@@ -20,9 +21,36 @@
                     </div>
         </div>
         <div class="col-md-9">
-            <h2><a href="#">Trees-{{ file }}</a></h2>
+
+            <div class="row">
+                <div class="col-sm-8">
+                    <h2><a href="#">Trees-{{ file }}</a></h2>
+                </div>
+
+                <div class="col-sm-4">
+                    <!-- Split button -->
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-primary">Downloads</button>
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
             <div>
                 {% if counts %} 
+                <div class="table-responsive">
                 <table class="table-bordered table-condensed table-striped cf"> 
                     <thead>
                         <tr class="{% cycle '' 'altrow' as alt %}">
@@ -42,8 +70,12 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+            {% if is_paginated %}{% pagination counts %}{% endif %}
                 {% else %}
-                <p>No Data Available</p>
+                <div class="col-sm-4 col-sm-offset-4">
+                    <h1>No Data Available</h1>
+                </div>
                 {% endif %}
             </div>
 

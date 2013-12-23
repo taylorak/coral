@@ -1,46 +1,84 @@
 {% extends "base.html" %}
 {% load custom_filters %}
+{% load pagination %}
 
 {% block head %}
 <title>Subtypes</title>
 {% endblock %}
 
 
-
 {% block body %}
 
+{% url "unique" id as unique %}
+{% url "perfect" id as perfect %}
+{% url "shortnew" id as shortnew %}
+
+
 <div class="container">
+
     <div class="row">
-    <div class="col-sm-12">
-        <h2><a href="#" %}">{{ title }}</a></h2>
-        {% if counts %}
+        <div class="col-sm-8">
+            {% if request.path == unique %} 
+            <h2><a href="{% url "dlUnique" id %}">{{ title }}</a></h2>
+            {% elif request.path == perfect %} 
+            <h2><a href="{% url "dlPerfect" id %}">{{ title }}</a></h2>
+            {% elif request.path == shortnew %} 
+            <h2><a href="{% url "dlShortnew" id %}">{{ title }}</a></h2>
+            {% else %}
+            {% endif %}
 
-        <div id="flip-scroll">
-            <table class="table-bordered table-striped table-condensed cf">
-                <thead>
-                    <tr>
-                        {% for header in headers %}
-                        <th>{{ header }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for row in counts %}
-                    <tr class="{% cycle '' 'altrow' as alt  %}">
-                        {% for header in headers %}
-                        <td> {{ row | dictvalue:header }}</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
         </div>
-        {% else %}
-        <p>No Data Available</p>
-        {% endif %}
+
+        <div class="col-sm-4">
+            <!-- Split button -->
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-primary">Downloads</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-</div>
+
+
+            <!--<h2><a href="#">{{ title }}</a></h2>-->
+
+            {% if counts %}
+            <div class="table-responsive">
+                <table class="table-bordered table-striped table-condensed cf">
+                    <thead>
+                        <tr>
+                            {% for header in headers %}
+                            <th>{{ header }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in counts %}
+                        <tr class="{% cycle '' 'altrow' as alt  %}">
+                            {% for header in headers %}
+                            <td> {{ row | dictvalue:header }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if is_paginated %}{% pagination counts %}{% endif %}
+            {% else %}
+            <div class="col-sm-4 col-sm-offset-4">
+            <p>No Data Available</p>
+        </div>
+            {% endif %}
 </div>
 
 {% endblock %}

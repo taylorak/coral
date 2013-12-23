@@ -1,6 +1,8 @@
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.shortcuts import render
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
@@ -18,9 +20,9 @@ import time
 # Create your views here.
 
 
-def errorPage(request):
-    # fix me with the correct page to display
-    return render_to_response('upload.html', RequestContext(request))
+def errorPage(request, template='upload.html'):
+    #TODO
+    return render(request, template)
 
 
 def inputFormDisplay(request, template='upload.html'):
@@ -58,7 +60,7 @@ def inputFormDisplay(request, template='upload.html'):
         'form': form,
     }
 
-    return render_to_response(template, context, RequestContext(request))
+    return render(request, template, context)
 
 
 def clades(request, id, template='clades.html'):
@@ -109,6 +111,20 @@ def clades(request, id, template='clades.html'):
                     data.append(column)
                 detailed_counts.append(dict(zip(detailed_headers, data)))
 
+        paginator1 = Paginator(all_counts, 50)
+        paginator2 = Paginator(detailed_counts, 50)
+
+        page = request.GET.get('page')
+        try:
+            all_counts = paginator1.page(page)
+            detailed_counts = paginator2.page(page)
+        except PageNotAnInteger:
+            all_counts = paginator1.page(1)
+            detailed_counts = paginator2.page(1)
+        except EmptyPage:
+            all_counts_counts = paginator1.page(paginator.num_pages)
+            detailed_counts = paginator2.page(paginator.num_pages)
+
     elif redirect:
         return redirect
     else:
@@ -124,7 +140,7 @@ def clades(request, id, template='clades.html'):
         'detailed_headers': detailed_headers,
     }
 
-    return render_to_response(template, context, RequestContext(request))
+    return render(request, template, context)
 
 
 ##
@@ -163,7 +179,7 @@ def unique(request, id, template='subtypes.html'):
         'id': id,
     }
 
-    return render_to_response(template, context, RequestContext(request))
+    return render(request, template, context)
 
 
 def shortnew(request, id, template='subtypes.html'):
@@ -191,7 +207,7 @@ def shortnew(request, id, template='subtypes.html'):
         'id': id,
     }
 
-    return render_to_response(template, context, RequestContext(request))
+    return render(request, template, context)
 
 
 def perfect(request, id, template='subtypes.html'):
@@ -218,11 +234,11 @@ def perfect(request, id, template='subtypes.html'):
         'id': id,
     }
 
-    return render_to_response(template, context, RequestContext(request))
+    return render(request, template, context)
 
 
-def multiplesCorrected(request, id, file):
-    """Displays resolved multiples results."""
+def multiplesCorrected(request, id, file, template='multiples.html'):
+    """Displays corrected multiples results."""
 
     try:
         sym_task = symTyperTask.objects.get(UID=id)
@@ -234,14 +250,24 @@ def multiplesCorrected(request, id, file):
     if ready:
         corrected_counts, corrected_headers, corrected_breakdown, corrected_subtypes = multiplesCsv(os.path.join(corrected, file))
 
-        #paginator = Paginator(corrected_counts, 10)
-        #page = request.GET.get('page')
-        #try:
-            #counts = paginator.page(page)
-        #except PageNotAnInteger:
-            #counts = paginator.page(1)
-        #except EmptyPage:
-            #counts = paginator.page(paginator.num_pages)
+        if corrected_counts != None and corrected_subtypes != None and corrected_breakdown != None:
+            paginator1 = Paginator(corrected_counts, 5)
+            paginator2 = Paginator(corrected_breakdown, 5)
+            paginator3 = Paginator(corrected_subtypes, 5)
+
+            page = request.GET.get('page')
+            try:
+                counts = paginator1.page(page)
+                breakdown = paginator2.page(page)
+                subtypes = paginator3.page(page)
+            except PageNotAnInteger:
+                counts = paginator1.page(1)
+                breakdown = paginator2.page(1)
+                subtypes = paginator3.page(1)
+            except EmptyPage:
+                counts = paginator1.page(paginator.num_pages)
+                breakdown = paginator2.page(paginator.num_pages)
+                subtypes = paginator3.page(paginator.num_pages)
 
     elif redirect:
         return redirect
@@ -249,19 +275,18 @@ def multiplesCorrected(request, id, file):
         return HttpResponseRedirect(reverse("status", args=[sym_task.UID]))
 
     context = {
-        'counts': corrected_counts,
-        #'counts': counts,
+        'counts': counts,
         'headers': corrected_headers,
-        'breakdown': corrected_breakdown,
-        'subtypes': corrected_subtypes,
+        'breakdown': breakdown,
+        'subtypes': subtypes,
         'id': id,
         'file': file,
     }
 
-    return render_to_response('multiples.html', context, RequestContext(request))
+    return render(request, template, context)
 
 
-def multiplesResolved(request, id, file):
+def multiplesResolved(request, id, file, template='multiples.html'):
     """Displays resolved multiples results."""
 
     try:
@@ -272,7 +297,28 @@ def multiplesResolved(request, id, file):
     resolved = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "resolveMultiples", "correctedMultiplesHits", "resolved")
     ready, redirect = taskReady(sym_task.celeryUID)
     if ready:
+
         resolved_counts, resolved_headers, resolved_breakdown, resolved_subtypes = multiplesCsv(os.path.join(resolved, file))
+
+        if resolved_counts != None and resolved_subtypes != None  and resolved_breakdown != None:
+            paginator1 = Paginator(resolved_counts, 5)
+            paginator2 = Paginator(resolved_breakdown, 5)
+            paginator3 = Paginator(resolved_subtypes, 5)
+
+            page = request.GET.get('page')
+            try:
+                counts = paginator1.page(page)
+                breakdown = paginator2.page(page)
+                subtypes = paginator3.page(page)
+            except PageNotAnInteger:
+                counts = paginator1.page(1)
+                breakdown = paginator2.page(1)
+                subtypes = paginator3.page(1)
+            except EmptyPage:
+                counts = paginator1.page(paginator.num_pages)
+                breakdown = paginator2.page(paginator.num_pages)
+                subtypes = paginator3.page(paginator.num_pages)
+
     elif redirect:
         return redirect
     else:
@@ -287,7 +333,7 @@ def multiplesResolved(request, id, file):
         'id': id,
     }
 
-    return render_to_response('multiples.html', context, RequestContext(request))
+    return render(request, template, context)
 
 
 def tree(request, id, file, template='tree.html'):
@@ -300,7 +346,18 @@ def tree(request, id, file, template='tree.html'):
     output = os.path.join(settings.SYMTYPER_HOME, str(id), "data", "placementInfo")
     ready, redirect = taskReady(sym_task.celeryUID)
     if ready:
-            counts, headers = treeCsv(os.path.join(output, file, "treenodeCladeDist.tsv"))
+        counts, headers = treeCsv(os.path.join(output, file, "treenodeCladeDist.tsv"))
+        if counts != None:
+            paginator = Paginator(counts, 50)
+
+            page = request.GET.get('page')
+            try:
+                counts = paginator.page(page)
+            except PageNotAnInteger:
+                counts = paginator.page(1)
+            except EmptyPage:
+                counts = paginator.page(paginator.num_pages)
+
     elif redirect:
         return redirect
     else:
@@ -313,7 +370,7 @@ def tree(request, id, file, template='tree.html'):
         'file': file,
     }
 
-    return render_to_response(template, context, RequestContext(request))
+    return render(request, template, context)
 
 
 def chart(request, id, site):
@@ -335,7 +392,7 @@ def chart(request, id, site):
     return render_to_response('chart.html', RequestContext(request, {'id': id, 'site': site, 'detailed_counts': detailed_counts}))
 
 
-def index(request, id):
+def index(request, id, template='index.html'):
     """Displays index page."""
     done = False
 
@@ -353,7 +410,11 @@ def index(request, id):
     else:
         pass
         #message = "pending..."
-    return render_to_response('index.html', RequestContext(request, {'done': done, 'id': id}))
+    context = {
+            'done': done, 
+            'id': id
+            }
+    return render(request, template, context)
 
 
 def dlAll(request, id):

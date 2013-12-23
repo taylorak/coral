@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load custom_filters %}
+{% load pagination %}
 
 {% block head %}
 <title>Multiples</title>
@@ -14,7 +15,29 @@
 
 <div class="container">
 
-    <h2><a href="#">Multiples-{{ file }}</a></h2>
+    <div class="row">
+        <div class="col-sm-8">
+            <h2><a href="#">Multiples-{{ file }}</a></h2>
+        </div>
+
+        <div class="col-sm-4">
+            <!-- Split button -->
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-primary">Downloads</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     <ul class="nav nav-tabs" id="myTab">
         <li{% if request.path == corrected %} %} class="active"{% endif %}><a href="{% url 'corrected' id file %}">Corrected</a></li>
@@ -25,6 +48,8 @@
         <div class="tab-pane fade in active">
             <!--<h3><a href="#">Corrected</a></h3>-->
             {% if counts %} 
+            <!--<div id="flip-scroll">-->
+            <div class="table-responsive">
             <table class="table-bordered table-condensed table-striped cf"> 
                 <thead>
                     <tr class="{% cycle '' 'altrow' as alt %}">
@@ -48,13 +73,21 @@
                     {% endfor %}
                 </tbody>
             </table>
-            {% else %}
-            <p>No Data Available</p>
-            {% endif %}
         </div>
 
+        {% pagination counts%}
 
-   </div>
+
+        {% else %}
+        <div class="col-sm-4 col-sm-offset-4">
+            <h1>No Data Available</h1>
+        </div>
+
+        {% endif %}
+    </div>
+
+
+</div>
 </div>
 
 
