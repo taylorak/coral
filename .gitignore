@@ -2,4 +2,3 @@ venv
 *.pyc
 *~
 *.db
-static/img/placment_trees/*
