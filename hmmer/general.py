@@ -47,7 +47,7 @@ def searchTable(tablePath, site):
 
 
 def csv2list(csvPath):
-    """Turns csv file into a dictionary.
+    """Turns csv file(for subtypes tab) into a dictionary.
 
     Args:
         csvPath: path to csv.

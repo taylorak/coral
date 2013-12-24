@@ -18,32 +18,33 @@
 
     <div class="row">
         <div class="col-sm-8">
-            {% if request.path == unique %} 
-            <h2><a href="{% url "dlUnique" id %}">{{ title }}</a></h2>
-            {% elif request.path == perfect %} 
-            <h2><a href="{% url "dlPerfect" id %}">{{ title }}</a></h2>
-            {% elif request.path == shortnew %} 
-            <h2><a href="{% url "dlShortnew" id %}">{{ title }}</a></h2>
-            {% else %}
-            {% endif %}
-
+            <h2>{{ title }}</h2>
         </div>
 
         <div class="col-sm-4">
-            <!-- Split button -->
-            <div class="btn-group pull-right">
-                <button type="button" class="btn btn-primary">Downloads</button>
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                </ul>
+            <div class="pull-right">
+
+            {% if request.path == unique %} 
+                <a href="{% url "dlUnique" id %}" class="download btn btn-primary">
+                    <span class="glyphicon glyphicon-download"></span>
+                        Download
+                </a>
+            {% elif request.path == perfect %} 
+                <a href="{% url "dlPerfect" id %}" class="download btn btn-primary">
+                    <span class="glyphicon glyphicon-download"></span>
+                        Download
+                </a>
+
+            {% elif request.path == shortnew %} 
+                <a href="{% url "dlShortnew" id %}" class="download btn btn-primary">
+                    <span class="glyphicon glyphicon-download"></span>
+                        Download
+                </a>
+
+            {% else %}
+            {% endif %}
+
+
             </div>
         </div>
     </div>

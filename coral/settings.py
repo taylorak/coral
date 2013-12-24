@@ -171,8 +171,8 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
 )
 
-SYMTYPER_HOME = os.path.join(PROJECT_ROOT, "hmmer", "files")
-SYMTYPER_IMG = os.path.join(PROJECT_ROOT, "static", "img")
+SYMTYPER_HOME = os.path.join(PROJECT_ROOT, "hmmer", "files") # Where Symtyper output goes
+SYMTYPER_IMG = os.path.join(PROJECT_ROOT, "static", "img") # Where placement tree image directory gets moved to
 
 import djcelery
 djcelery.setup_loader()

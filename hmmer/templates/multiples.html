@@ -16,26 +16,12 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-xs-6">
             <h2><a href="#">Multiples-{{ file }}</a></h2>
         </div>
 
-        <div class="col-sm-4">
-            <!-- Split button -->
-            <div class="btn-group pull-right">
-                <button type="button" class="btn btn-primary">Downloads</button>
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                </ul>
-            </div>
+        <div class="col-xs-6">
+        <!--Download Button Goes Here -->
         </div>
     </div>
 
@@ -49,68 +35,68 @@
             <!--<h3><a href="#">Corrected</a></h3>-->
             {% if counts %} 
             <!--<div id="flip-scroll">-->
-            <div class="table-responsive">
-            <table class="table-bordered table-condensed table-striped cf"> 
-                <thead>
-                    <tr class="{% cycle '' 'altrow' as alt %}">
-                        {% for header in  headers %}
-                        <th>{{ header }}</th>
-                        {% endfor %}
-                        <th>Sample Distribution</th>
-                        <th>Subtype Distribution</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in counts %}
-                    <tr class="{% cycle alt  %}">
+                <div class="table-responsive">
+                    <table class="table-bordered table-condensed table-striped cf"> 
+                        <thead>
+                            <tr class="{% cycle '' 'altrow' as alt %}">
+                                {% for header in  headers %}
+                                <th>{{ header }}</th>
+                                {% endfor %}
+                                <th>Sample Distribution</th>
+                                <th>Subtype Distribution</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in counts %}
+                            <tr class="{% cycle alt  %}">
 
-                        {% for header in headers %}
-                        <td> {{ row| dictvalue:header }}  </td>
-                        {% endfor %}
-                        <td><div style="width: 400px; height: 300px; margin: 0 auto;" class="thumbnail" id="breakdown_{{ forloop.counter }}"></div></td>
-                        <td><div style="width: 400px; height: 300px; margin: 0 auto;" class="thumbnail" id="subtypes_{{ forloop.counter }}"></div></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                                {% for header in headers %}
+                                <td> {{ row| dictvalue:header }}  </td>
+                                {% endfor %}
+                                <td><div style="width: 400px; height: 300px; margin: 0 auto;" class="thumbnail" id="breakdown_{{ forloop.counter }}"></div></td>
+                                <td><div style="width: 400px; height: 300px; margin: 0 auto;" class="thumbnail" id="subtypes_{{ forloop.counter }}"></div></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% pagination counts%}
+
+
+                {% else %}
+                <div class="col-sm-4 col-sm-offset-4">
+                    <h1>No Data Available</h1>
+                </div>
+
+                {% endif %}
+            </div>
+
+
         </div>
-
-        {% pagination counts%}
-
-
-        {% else %}
-        <div class="col-sm-4 col-sm-offset-4">
-            <h1>No Data Available</h1>
-        </div>
-
-        {% endif %}
     </div>
 
 
-</div>
-</div>
 
 
+    <script type="text/javascript">
 
+        // Load the Visualization API and the piechart package.
+    google.load('visualization', '1.0', {'packages':['corechart'],"callback":drawCharts});
 
-<script type="text/javascript">
+    // Set a callback to run when the Google Visualization API is loaded.
+    //google.setOnLoadCallback(drawCharts);
 
-    // Load the Visualization API and the piechart package.
-google.load('visualization', '1.0', {'packages':['corechart'],"callback":drawCharts});
+    function drawCharts() {
+        {% for row in breakdown %}
+        drawChart_breakdown_{{ forloop.counter }}();
+        {% endfor %}
 
-// Set a callback to run when the Google Visualization API is loaded.
-//google.setOnLoadCallback(drawCharts);
+        {% for row in subtypes %}
+        drawChart_subtypes_{{ forloop.counter }}();
+        {% endfor %}
 
-function drawCharts() {
-    {% for row in breakdown %}
-    drawChart_breakdown_{{ forloop.counter }}();
-    {% endfor %}
-
-    {% for row in subtypes %}
-    drawChart_subtypes_{{ forloop.counter }}();
-    {% endfor %}
-
-}
+    }
 
 {% for row in breakdown %}
 function drawChart_breakdown_{{ forloop.counter }}() {

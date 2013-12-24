@@ -47,11 +47,11 @@ urlpatterns = patterns('',
 
     # multiples
     url(r'^(?P<id>\d+\.\d+\.\d+)/dlMultiples/$', 'hmmer.views.dlMultiples', name="dlMultiples"),
-    ##url(r'^status/(?P<id>\d+\.\d+\.\d+)/(?P<dir>[A-Z])/dlMultiples/$','hmmer.views.dlMultiples',name="dlMultiples"),
+    ##url(r'^status/(?P<id>\d+\.\d+\.\d+)/(?P<dir>[A-I])/dlMultiples/$','hmmer.views.dlMultiples',name="dlMultiples"),
 
     # tree
     url(r'^(?P<id>\d+\.\d+\.\d+)/dlTree/$', 'hmmer.views.dlTree', name="dlTree"),
-    ##url(r'^status/(?P<id>\d+\.\d+\.\d+)/(?P<dir>[A-Z])/dlTree/$','hmmer.views.dlTree',name="dlTree"),
+    ##url(r'^status/(?P<id>\d+\.\d+\.\d+)/(?P<dir>[A-I])/dlTree/$','hmmer.views.dlTree',name="dlTree"),
 
     # all
     url(r'^(?P<id>\d+\.\d+\.\d+)/dlEverything/$', 'hmmer.views.dlEverything', name="dlEverything"),
